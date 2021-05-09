@@ -246,7 +246,7 @@
             <div class="col-lg-3">
                 <div class="dropdown">
                     @php
-                        $categories = DB::table('categories')->latest()->get();
+                        $categories = DB::table('categories')->get();
                     @endphp
                     <button class="btn btn-success categorydrop humberger__open2" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars px-4"></i>
                       All Departments
@@ -282,7 +282,7 @@
     </div>
     <nav class="humberger__menu__nav2 mobile-menu-cat">
     @php
-                        $categories = DB::table('categories')->latest()->get();
+                        $categories = DB::table('categories')->get();
                     @endphp
         <ul>
         @foreach ($categories as $category)
