@@ -71,8 +71,9 @@
                     <li><a href="./blog-details.html">Blog Details</a></li>
                 </ul>
             </li> --}}
+            <li><a href="{{ route('requestProduct') }}">Request Product</a></li>
             <li><a href="{{ route('contact') }}">Contact</a></li>
-            <li><a href="{{route('about')}}">About Us</a></li>
+            <!--<li><a href="{{route('about')}}">About Us</a></li>-->
         </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
@@ -168,8 +169,9 @@
                             </ul>
                         </li> --}}
                         {{-- <li><a href="./blog.html">Blog</a></li> --}}
+                        <li><a href="{{ route('requestProduct') }}">Request Product</a></li>
                         <li><a href="{{ route('contact') }}">Contact</a></li>
-                        <li><a href="{{route('about')}}">About Us</a></li>
+                        <!--<li><a href="{{route('about')}}">About Us</a></li>-->
                     </ul>
                 </nav>
             </div>
@@ -206,10 +208,10 @@
             <div class="col-lg-3">
                 <div class="dropdown">
                     @php
-                        $categories = DB::table('categories')->latest()->get();
+                        $categories = DB::table('categories')->where('status', 1)->get();
                     @endphp
                     <button class="btn btn-success dropdown-toggle categorydrop " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars px-4"></i>
-                      All Departments
+                      All Categories
                     </button>
                     <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                         @foreach ($categories as $category)
@@ -221,11 +223,10 @@
                                 @endphp
                                 @if (count($subcategories) > 0)
                                     @foreach ($subcategories as $item)
-                                        <li class="dropdown-item"><a href="{{route('subcategory', $item->slug)}}">{{$item->title}}</a></li>
+                                        <a href="{{route('subcategories', $item->slug)}}"><li class="dropdown-item">{{$item->title}}</li></a>
                                     @endforeach
                                 @else
                                     <li class="dropdown-item"><a href="#">No Subcategories</a></li>
-
                                 @endif
 
                             </ul>

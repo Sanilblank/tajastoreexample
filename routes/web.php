@@ -6,6 +6,7 @@ use App\Http\Controllers\FrontController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RequestorderController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
@@ -55,7 +56,7 @@ Route::get('/privacypolicy', [FrontController::class, 'privacypolicy'])->name('p
 Route::get('/contact', [FrontController::class, 'contact'])->name('contact');
 Route::get('/products/{slug}/{id}', [FrontController::class, 'products'])->name('products');
 Route::get('/checkout', [FrontController::class, 'checkout'])->name('checkout');
-Route::get('/subcategory/{subcategoryslug}', [FrontController::class, 'subcategory'])->name('subcategory');
+Route::get('/subcategories/{subcategoryslug}', [FrontController::class, 'subcategories'])->name('subcategories');
 
 // Cart
 Route::get('/cart', [FrontController::class, 'cart'])->name('cart');
@@ -107,6 +108,10 @@ Route::get('auth/facebook/callback', [SocialMediaController::class, 'facebookSig
 //Search
 Route::get('/search/{slug}', [FrontController::class, 'search'])->name('search');
 
+//Request Order
+Route::get('/requestProduct', [FrontController::class, 'requestProduct'])->name('requestProduct');
+Route::post('/storeProductRequest', [FrontController::class, 'storeProductRequest'])->name('storeProductRequest');
+
 Auth::routes();
 
 Route::get('/verify', [RegisterController::class, 'verifyUser'])->name('verify.user');
@@ -142,4 +147,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('singlevendorsubcategory', VendorSubcategoryController::class);
     Route::resource('singlevendorproduct', VendorProductController::class);
     Route::resource('singlevendororder', VendorOrderController::class);
+
+    Route::resource('requestorder', RequestorderController::class);
 });

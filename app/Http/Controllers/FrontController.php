@@ -7,7 +7,9 @@ use App\Mail\EmailChangeVerification;
 use App\Mail\PasswordChangeVerification;
 use App\Mail\VerifyUserEmail;
 use App\Models\Cart;
+use App\Models\Category;
 use App\Models\DelieveryAddress;
+use App\Models\Requestorder;
 use App\Models\Order;
 use App\Models\OrderedProducts;
 use App\Models\Product;
@@ -20,29 +22,31 @@ use App\Models\User;
 use App\Models\Wishlist;
 use App\Notifications\NewOrderedProduct;
 use App\Notifications\NewOrderNotification;
+use App\Notifications\RequestOrderNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class FrontController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->role_id == 1) {
+        if(Auth::user()->role_id == 1) {
             return view('backend.dashboard');
+
         } elseif (Auth::user()->role_id == 4) {
             return view('backend.singlevendor.vendordashboard');
-        } elseif (Auth::user()->role_id == 3) {
+        } elseif(Auth::user()->role_id == 3) {
             $slider = Slider::latest()->get();
             $subcategories = Subcategory::latest()->get();
             $featuredproducts = Product::latest()->where('featured', 1)->take(15)->get();
             $offerproducts = Product::latest()->where('discount', '>', 0)->take(6)->get();
             $filterproducts = Product::latest()->take(8)->get();
-            $ratedproducts = Review::orderBy('rating', 'DESC')->with('product')->take(8)->get();
+            $ratedproducts = Review::latest()->orderBy('rating', 'DESC')->with('product')->take(8)->get();
             return view('frontend.index', compact('subcategories', 'featuredproducts', 'offerproducts', 'filterproducts', 'ratedproducts', 'slider'));
         }
     }
@@ -51,10 +55,9 @@ class FrontController extends Controller
         $subcategories = Subcategory::latest()->get();
         $products = Product::latest()->simplePaginate(16);
         $filterproducts = Product::latest()->take(6)->get();
-        $ratedproducts = Review::orderBy('rating', 'DESC')->with('product')->take(6)->get();
+        $ratedproducts = Review::latest()->orderBy('rating', 'DESC')->with('product')->take(6)->get();
         return view('frontend.shop', compact('subcategories', 'products', 'filterproducts', 'ratedproducts'));
     }
-
     public function offers()
     {
         $subcategories = Subcategory::latest()->get();
@@ -82,12 +85,12 @@ class FrontController extends Controller
         return view('frontend.privacypolicy');
     }
 
-    public function subcategory($slug)
+    public function subcategories($slug)
     {
         $subcategory = Subcategory::where('slug', $slug)->first();
         $products = Product::latest()->where('subcategory_id', $subcategory->id)->simplePaginate(16);
         $filterproducts = Product::latest()->take(6)->get();
-        $ratedproducts = Review::orderBy('rating', 'DESC')->with('product')->take(6)->get();
+        $ratedproducts = Review::latest()->orderBy('rating', 'DESC')->with('product')->take(6)->get();
         $subcategories = Subcategory::latest()->get();
         return view('frontend.subcategory', compact('subcategories', 'products', 'subcategory', 'filterproducts', 'ratedproducts'));
     }
@@ -107,14 +110,14 @@ class FrontController extends Controller
         $relatedproducts = Product::where('subcategory_id', $product->subcategory_id)->where('id', '!=', $product->id)->take(5)->get();
         $subcategories = Subcategory::latest()->get();
         $filterproducts = Product::latest()->take(6)->get();
-        $ratedproducts = Review::orderBy('rating', 'DESC')->take(6)->get();
+        $ratedproducts = Review::latest()->orderBy('rating', 'DESC')->take(6)->get();
         return view('frontend.products', compact('subcategories', 'product', 'productimage', 'productimages', 'relatedproducts', 'filterproducts', 'ratedproducts'));
     }
 
     public function checkout($id)
     {
         $cartproducts = Cart::where('user_id', $id)->get();
-        if (count($cartproducts) == 0) {
+        if(count($cartproducts) == 0) {
             return redirect()->back()->with('failure', 'No products in your cart.');
         }
 
@@ -123,9 +126,10 @@ class FrontController extends Controller
             $carttotal = $carttotal + ($cartproduct->price * $cartproduct->quantity);
         }
 
-        if ($carttotal < 1000) {
-            return redirect()->back()->with('failure', 'Order should be above Rs. 1000 to chekcout.');
-        } else {
+        if ($carttotal < 700) {
+            return redirect()->back()->with('failure', 'Order should be above Rs. 700 to chekcout.');
+        }
+        else{
             $subcategories = Subcategory::latest()->get();
             return view('frontend.checkout', compact('subcategories', 'cartproducts'));
         }
@@ -203,9 +207,9 @@ class FrontController extends Controller
     public function addtowishlist($id)
     {
         $wishlist = Wishlist::where('product_id', $id)->where('user_id', Auth::user()->id)->first();
-        if ($wishlist) {
+        if($wishlist) {
             return redirect()->back()->with('failure', 'Product is already to wishlist. Go to wishlist.');
-        } else {
+        } else{
             $wishlistproduct = Wishlist::create([
                 'user_id' => Auth::user()->id,
                 'product_id' => $id,
@@ -261,105 +265,106 @@ class FrontController extends Controller
     }
 
     public function deleteuserreview($id)
-    {
-        $userreview = Review::findorfail($id);
-        $userreview->delete();
-        return redirect()->back()->with('success', 'Review Deleted Successfully');
-    }
+      {
+          $userreview = Review::findorfail($id);
+          $userreview->delete();
+          return redirect()->back()->with('success', 'Review Deleted Successfully');
+      }
 
-    public function myreviews()
-    {
-        $user_id = Auth::user()->id;
-        $reviews = Review::where('user_id', $user_id)->latest()->simplePaginate(10);
-        $subcategories = Subcategory::latest()->get();
+      public function myreviews()
+      {
+            $user_id = Auth::user()->id;
+            $reviews = Review::where('user_id', $user_id)->latest()->simplePaginate(10);
+            $subcategories = Subcategory::latest()->get();
 
-        return view('frontend.myreviews', compact('reviews', 'subcategories'));
-    }
+            return view('frontend.myreviews', compact('reviews', 'subcategories'));
+      }
 
-    public function placeorder(Request $request)
-    {
-        $data = $this->validate($request, [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'address' => 'required',
-            'town' => 'required',
-            'district' => 'required',
-            'postcode' => 'required',
-            'phone' => 'required',
-            'email' => 'required|email'
-        ]);
-
-        $address = DelieveryAddress::where('user_id', Auth::user()->id)->first();
-        if ($address) {
-            $delievery_address = DelieveryAddress::create([
-                'user_id' => Auth::user()->id,
-                'firstname' => $data['firstname'],
-                'lastname' => $data['lastname'],
-                'address' => $data['address'],
-                'town' => $data['town'],
-                'district' => $data['district'],
-                'postcode' => $data['postcode'],
-                'phone' => $data['phone'],
-                'email' => $data['email'],
-                'is_default' => 0
+      public function placeorder(Request $request)
+      {
+          $data = $this->validate($request, [
+              'firstname' => 'required',
+              'lastname' => 'required',
+              'address' => 'required',
+              'town' => 'required',
+              'district' => 'required',
+              'postcode' => 'required',
+              'phone' => 'required',
+              'email' => 'required|email'
             ]);
-        } else {
-            $delievery_address = DelieveryAddress::create([
+
+            $address = DelieveryAddress::where('user_id', Auth::user()->id)->first();
+            if($address) {
+                $delievery_address = DelieveryAddress::create([
+                    'user_id' => Auth::user()->id,
+                    'firstname' => $data['firstname'],
+                    'lastname' => $data['lastname'],
+                    'address' => $data['address'],
+                    'town' => $data['town'],
+                    'district' => $data['district'],
+                    'postcode' => $data['postcode'],
+                    'phone' => $data['phone'],
+                    'email' => $data['email'],
+                    'is_default' => 0
+                ]);
+            }else {
+                $delievery_address = DelieveryAddress::create([
+                    'user_id' => Auth::user()->id,
+                    'firstname' => $data['firstname'],
+                    'lastname' => $data['lastname'],
+                    'address' => $data['address'],
+                    'town' => $data['town'],
+                    'district' => $data['district'],
+                    'postcode' => $data['postcode'],
+                    'phone' => $data['phone'],
+                    'email' => $data['email'],
+                    'is_default' => 1
+                ]);
+            }
+
+            $delievery_address->save();
+
+            $order = Order::create([
                 'user_id' => Auth::user()->id,
-                'firstname' => $data['firstname'],
-                'lastname' => $data['lastname'],
-                'address' => $data['address'],
-                'town' => $data['town'],
-                'district' => $data['district'],
-                'postcode' => $data['postcode'],
-                'phone' => $data['phone'],
-                'email' => $data['email'],
-                'is_default' => 1
-            ]);
-        }
-
-        $delievery_address->save();
-
-        $order = Order::create([
-            'user_id' => Auth::user()->id,
-            'delievery_address_id' => $delievery_address->id,
-            'status_id' => 1
-        ]);
-
-        $order->save();
-        $order->notify(new NewOrderNotification($order));
-
-        $cartproducts = Cart::where('user_id', Auth::user()->id)->get();
-
-        foreach ($cartproducts as $cartproduct) {
-            $product = Product::where('id', $cartproduct->product_id)->first();
-            $newstock = $product->unit_info - $cartproduct->quantity;
-
-            $ordered_products = OrderedProducts::create([
-                'user_id' => Auth::user()->id,
-                'order_id' => $order->id,
-                'vendor_id' => $product->vendor_id,
-                'product_id' => $cartproduct->product_id,
-                'quantity' => $cartproduct->quantity,
-                'price' => $cartproduct->price,
+                'delievery_address_id' => $delievery_address->id,
                 'status_id' => 1
             ]);
 
-            $product->update([
-                'unit_info' => $newstock
-            ]);
+            $order->save();
+            $order->notify(new NewOrderNotification($order));
 
-            $cartproduct->delete();
+            $cartproducts = Cart::where('user_id', Auth::user()->id)->get();
 
-            $ordered_products->save();
-            $ordered_products->notify(new NewOrderedProduct($ordered_products));
-            $neworder = DB::table('notifications')->where('type', 'App\Notifications\NewOrderedProduct')->latest()->first();
-            DB::update('update notifications set vendor_id = ? where id = ?', [$product->vendor_id, $neworder->id]);
-        }
-        return redirect()->route('index')->with('success', 'Thank you for ordering. We will call you soon.');
-    }
+            foreach ($cartproducts as $cartproduct) {
+                $product = Product::where('id', $cartproduct->product_id)->first();
 
-    public function myaccount()
+                $newstock = $product->unit_info - $cartproduct->quantity;
+
+                $ordered_products = OrderedProducts::create([
+                    'user_id' => Auth::user()->id,
+                    'order_id' => $order->id,
+                    'vendor_id' => $product->vendor_id,
+                    'product_id' => $cartproduct->product_id,
+                    'quantity' => $cartproduct->quantity,
+                    'price' => $cartproduct->price,
+                    'status_id' => 1
+                ]);
+
+                $product->update([
+                    'unit_info' => $newstock
+                ]);
+
+                $cartproduct->delete();
+
+                $ordered_products->save();
+                // $ordered_products->notify(new NewOrderedProduct($ordered_products));
+                // $neworder = DB::table('notifications')->where('type', 'App\Notifications\NewOrderedProduct')->latest()->first();
+                // DB::update('update notifications set vendor_id = ? where id = ?', [$product->vendor_id, $neworder->id]);
+            }
+            return redirect()->route('index')->with('success', 'Thank you for ordering. We will call you soon.');
+      }
+
+      public function myaccount()
     {
         $user = User::where('id', Auth::user()->id)->first();
         $title = $user->name;
@@ -387,7 +392,7 @@ class FrontController extends Controller
             'district' => 'required',
             'town' => 'required',
             'postcode' => 'required',
-            'email' => 'required|email',
+            'email'=>'required|email',
         ]);
 
         $address = DelieveryAddress::findorfail($id);
@@ -410,7 +415,7 @@ class FrontController extends Controller
     {
         $user = User::where('id', Auth::user()->id)->first();
         $subcategories = Subcategory::latest()->get();
-        return view('frontend.myprofile.myprofile', compact('subcategories', 'user'));
+        return view('frontend.myprofile.myprofile', compact( 'subcategories', 'user'));
     }
 
     public function editinfo()
@@ -418,16 +423,16 @@ class FrontController extends Controller
 
         $user = User::where('id', Auth::user()->id)->first();
         $subcategories = Subcategory::latest()->get();
-        return view('frontend.myprofile.editinfo', compact('subcategories', 'user'));
+        return view('frontend.myprofile.editinfo', compact( 'subcategories', 'user'));
     }
 
     public function sendEmailChange(Request $request)
     {
         $user = Auth::user();
 
-        $data = $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email',
+        $data = $this->validate($request,[
+            'name'=>'required',
+            'email'=>'required|email',
         ]);
 
         Cookie::queue('emailcookie', $data['email'], 30);
@@ -443,11 +448,11 @@ class FrontController extends Controller
         return redirect()->back()->with('success', 'Please verify from your newly given email');
     }
 
-    public function useremailchange()
-    {
+    public function useremailchange(){
         $verification_code = \Illuminate\Support\Facades\Request::get('code');
         $user = User::where('verification_code', $verification_code)->first();
-        if ($user != null) {
+        if( $user != null)
+        {
             $username = Cookie::get('namecookie');
             $email = Cookie::get('emailcookie');
 
@@ -460,8 +465,7 @@ class FrontController extends Controller
         return redirect()->route('index')->with('error', 'Something is wrong.');
     }
 
-    public function sendotpEmail()
-    {
+    public function sendotpEmail() {
         $user = Auth::user();
 
         $email = $user->email;
@@ -478,6 +482,7 @@ class FrontController extends Controller
 
         $subcategories = Subcategory::latest()->get();
         return view('frontend.myprofile.otpconfirmation', compact('subcategories'));
+
     }
 
     public function otpvalidation(Request $request)
@@ -489,11 +494,12 @@ class FrontController extends Controller
 
         $cookiedata = Cookie::get('otpcookie');
 
-        if ($data['otpcode'] == $cookiedata) {
+        if($data['otpcode'] == $cookiedata) {
 
             $subcategories = Subcategory::latest()->get();
-            return view('frontend.myprofile.editpassword', compact('subcategories'));
-        } else {
+            return view('frontend.myprofile.editpassword', compact( 'subcategories'));
+        }
+        else {
             return response()->json([
                 'error_message' => 'Your otp code didnt match.'
             ], Response::HTTP_OK);
@@ -502,27 +508,32 @@ class FrontController extends Controller
 
     public function updatePassword(Request $request)
     {
-        $data = $this->validate($request, [
+        $data = $this->validate($request,[
             'oldpassword' =>  'required',
             'newpassword' => 'required|min:8|confirmed|different:password',
         ]);
 
         $user = User::where('id', Auth::user()->id)->first();
-        if (Hash::check($data['oldpassword'], $user->password)) {
-            if (!Hash::check($data['newpassword'], $user->password)) {
+        if(Hash::check($data['oldpassword'], $user->password))
+        {
+            if(!Hash::check($data['newpassword'], $user->password))
+            {
                 $newpassword = Hash::make($data['newpassword']);
                 $user->update([
                     'password' => $newpassword,
                 ]);
                 $user->save();
                 return redirect()->route('myprofile')->with('success', 'Password has been changed.');
-            } else {
-                return redirect()->back()
-                    ->with('samepass', 'Old password cannot be new password.');
             }
-        } else {
+            else
+            {
+                return redirect()->back()
+                        ->with('samepass', 'Old password cannot be new password.');
+            }
+        }
+        else{
             return redirect()->back()
-                ->with('oldfailure', 'Your old password doesnot match our credentials.');
+                    ->with('oldfailure', 'Your old password doesnot match our credentials.');
         }
     }
 
@@ -530,7 +541,7 @@ class FrontController extends Controller
     {
         $subcategories = Subcategory::latest()->get();
         $orders = Order::latest()->where('user_id', Auth::user()->id)->with('user', 'status')->get();
-        return view('frontend.myorders', compact('subcategories', 'orders'));
+        return view('frontend.myorders', compact( 'subcategories', 'orders'));
     }
 
     public function cancelorder(Request $request, $id)
@@ -566,9 +577,9 @@ class FrontController extends Controller
     {
         $email = "info@tajamandi.com";
         $data = $this->validate($request, [
-            'fullname' => 'required',
-            'customeremail' => 'required',
-            'message' => 'required',
+            'fullname'=>'required',
+            'customeremail'=>'required',
+            'message'=>'required',
         ]);
 
         $mailData = [
@@ -591,5 +602,51 @@ class FrontController extends Controller
         $ratedproducts = Review::orderBy('rating', 'DESC')->with('product')->take(6)->get();
 
         return view('frontend.search', compact('subcategories', 'products', 'filterproducts', 'ratedproducts'));
+    }
+
+    // public function updateallall()
+    // {
+    //     $product = Product::all();
+    //     foreach ($product as $products) {
+    //         $products->update([
+    //             'bought_price' => 1000,
+    //             'unit_info' => 5
+    //         ]);
+    //     }
+    // }
+
+    public function requestProduct()
+    {
+        $subcategories = Subcategory::latest()->get();
+        $filterproducts = Product::latest()->take(6)->get();
+        $ratedproducts = Review::orderBy('rating', 'DESC')->with('product')->take(6)->get();
+        return view('frontend.requestproduct', compact('subcategories', 'filterproducts', 'ratedproducts'));
+    }
+
+    public function storeProductRequest(Request $request)
+    {
+        $data = $this->validate($request, [
+            'name'=>'required',
+            'phone'=>'required',
+            'address'=>'required',
+            'email'=>'required',
+            'product'=>'required',
+            'description'=>'required',
+        ]);
+
+        $requestorder = Requestorder::create([
+            'name'=>$data['name'],
+            'phone'=>$data['phone'],
+            'address'=>$data['address'],
+            'email'=>$data['email'],
+            'product'=>$data['product'],
+            'description'=>$data['description'],
+            'status'=>'Pending',
+        ]);
+
+        $requestorder->save();
+        $requestorder->notify(new RequestOrderNotification($requestorder));
+
+        return redirect()->back()->with('success', 'Thank you for requesting. We will get back to you soon.');
     }
 }

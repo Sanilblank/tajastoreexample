@@ -96,7 +96,7 @@
                                         $discountamount = ($product->discount / 100) * $product->price;
                                         $afterdiscount = $product->price - $discountamount;
                                     @endphp
-                                    <div class="product__details__price">Rs. {{$afterdiscount}} <span style="color: black; font-size: 18px;"><strike>Rs. {{$product->price}}</strike><span></div>
+                                    <div class="product__details__price">Rs. {{ceil($afterdiscount)}} <span style="color: black; font-size: 18px;"><strike>Rs. {{$product->price}}</strike><span></div>
                                 @else
                                     <div class="product__details__price">Rs. {{$product->price}}</div>
                                 @endif
@@ -122,7 +122,16 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="hidden" value="{{$product->price}}" name="price" class="form-control">
+                                            @if ($product->discount > 0)
+                                                @php
+                                                    $discountamount = ($product->discount / 100) * $product->price;
+                                                    $afterdiscount = $product->price - $discountamount;
+                                                @endphp
+
+                                                <input type="hidden" value="{{ceil($afterdiscount)}}" name="price" class="form-control">
+                                            @else
+                                                <input type="hidden" value="{{$product->price}}" name="price" class="form-control">
+                                            @endif
                                         </div>
                                         <a href="#" class="primary-btn" onclick="this.parentNode.submit()">ADD TO CART</a>
                                         <a href="{{route('addtowishlist', $product->id)}}" class="heart-icon"><span class="icon_heart_alt"></span></a>
@@ -149,6 +158,7 @@
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12">
+                            <hr>
                             <div class="product__details__tab">
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li class="nav-item">
@@ -464,7 +474,8 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-5 mt-1">
+                <div class="col-lg-3 col-md-5 mt-4">
+                    <hr>
                     <div class="sidebar">
                         {{-- <div class="blog__sidebar__search">
                             <form action="#">
@@ -547,7 +558,7 @@
                                 @endphp
                                 <div class="sidebar__item__size" style="display:{{$show}}">
                                     <label for="large">
-                                        <a href="{{route('subcategory', $item->slug)}}" style="color: black;"> {{$item->title}}</a>
+                                        <a href="{{route('subcategories', $item->slug)}}" style="color: black;"> {{$item->title}}</a>
                                     </label>
                                 </div>
                             @endforeach
@@ -588,7 +599,7 @@
                                                         $discountamount = ($filterproduct->discount / 100) * $filterproduct->price;
                                                         $afterdiscount = $filterproduct->price - $discountamount;
                                                     @endphp
-                                                        <span>Rs. {{$afterdiscount}}</span>
+                                                        <span>Rs. {{ceil($afterdiscount)}}</span>
                                                         <strike style="font-size: 15px; color: black;">Rs. {{$filterproduct->price}}</strike>
                                                     @else
                                                         <span>Rs. {{$filterproduct->price}}</span>
@@ -629,7 +640,7 @@
                                                         $discountamount = ($filterproduct->discount / 100) * $filterproduct->price;
                                                         $afterdiscount = $filterproduct->price - $discountamount;
                                                     @endphp
-                                                        <span>Rs. {{$afterdiscount}}</span>
+                                                        <span>Rs. {{ceil($afterdiscount)}}</span>
                                                         <strike style="font-size: 15px; color: black;">Rs. {{$filterproduct->price}}</strike>
                                                     @else
                                                         <span>Rs. {{$filterproduct->price}}</span>
@@ -680,7 +691,7 @@
                                                         $discountamount = ($productis->discount / 100) * $productis->price;
                                                         $afterdiscount = $productis->price - $discountamount;
                                                     @endphp
-                                                        <span>Rs. {{$afterdiscount}}</span>
+                                                        <span>Rs. {{ceil($afterdiscount)}}</span>
                                                         <strike style="font-size: 15px; color: black;">Rs. {{$productis->price}}</strike>
                                                     @else
                                                         <span>Rs. {{$productis->price}}</span>
@@ -724,7 +735,7 @@
                                                         $discountamount = ($productis->discount / 100) * $productis->price;
                                                         $afterdiscount = $productis->price - $discountamount;
                                                     @endphp
-                                                        <span>Rs. {{$afterdiscount}}</span>
+                                                        <span>Rs. {{ceil($afterdiscount)}}</span>
                                                         <strike style="font-size: 15px; color: black;">Rs. {{$productis->price}}</strike>
                                                     @else
                                                         <span>Rs. {{$productis->price}}</span>
@@ -782,7 +793,7 @@
                                     <div class="product__discount__item__text">
                                         <h5><a href="{{ route('products', ['slug' => $relatedproduct->slug, 'id'=>$relatedproduct->id]) }}">{{ $relatedproduct->title }}</a></h5>
                                         <h6>({{$relatedproduct->quantity}} {{$relatedproduct->unit}})</h6>
-                                        <div class="product__item__price">Rs. {{ $afterdiscount }} <span>Rs.
+                                        <div class="product__item__price">Rs. {{ ceil($afterdiscount) }} <span>Rs.
                                                 {{ $relatedproduct->price }}</span></div>
                                     </div>
                                 </div>

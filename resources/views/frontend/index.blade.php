@@ -21,7 +21,11 @@
                         <div class="col-lg-5 text-sm-center">
                             <span>{{$slideritem->subtitle}}</span>
                             <h1>{{$slideritem->title}}</h1>
-                            <p >{{$slideritem->description}}</p>
+                            <p >
+                                @php
+                                    echo $slideritem->description;
+                                @endphp
+                            </p>
                             <a href="{{route('shop')}}" class="primary-btn">Shop Now</a>
                         </div>
                     </div>
@@ -47,9 +51,9 @@
                 <div class="categories__slider owl-carousel">
                     @foreach ($subcategories as $subcategory)
                         <div class="col-lg-3">
-                            <div onclick="location.href='{{route('subcategory', $subcategory->slug)}}';" style="cursor: pointer;" class="categories__item set-bg"
+                            <div onclick="location.href='{{route('subcategories', $subcategory->slug)}}';" style="cursor: pointer;" class="categories__item set-bg"
                                 data-setbg="{{ Storage::disk('uploads')->url($subcategory->image_name) }}">
-                                <h5><a href="{{route('subcategory', $subcategory->slug)}}">{{ $subcategory->title }}</a></h5>
+                                <h5><a href="{{route('subcategories', $subcategory->slug)}}">{{ $subcategory->title }}</a></h5>
                         </div>
                         </div>
                     @endforeach
@@ -106,7 +110,7 @@
                                         <div class="product__discount__item__text">
                                             <b>({{$product->quantity}} {{$product->unit}})</b>
                                             <h5><a href="{{ route('products', ['slug' => $product->slug, 'id'=>$product->id]) }}">{{ $product->title }}</a></h5>
-                                            <div class="product__item__price">Rs. {{ $afterdiscount }} <span>Rs.
+                                            <div class="product__item__price">Rs. {{ ceil($afterdiscount) }} <span>Rs.
                                                     {{ $product->price }}</span></div>
                                         </div>
                                     </div>
@@ -147,6 +151,10 @@
     <!-- Featured Section End -->
 
     <!-- Discount Products -->
+
+@if(count($offerproducts) == 0)
+
+@else
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -155,7 +163,7 @@
                             <h2>Sale Off</h2>
                         </div>
                         <div class="row">
-                            <div class="product__discount__slider owl-carousel">
+                                <div class="product__discount__slider owl-carousel">
                                 @foreach ($offerproducts as $product)
                                     <div class="col-lg-4 product-container">
                                         <div class="product__discount__item">
@@ -184,7 +192,7 @@
                                                 <span>{{ $product->subcategory->title }}</span>
                                                 <h5 style="font-size: 20px; font-weight: 650"><a href="{{ route('products', ['slug' => $product->slug, 'id'=>$product->id]) }}">{{ $product->title }} </a></h5>
                                                 <h6>({{$product->quantity}} {{$product->unit}})</h6>
-                                                <div class="product__item__price">Rs. {{ $afterdiscount }} <span>Rs.
+                                                <div class="product__item__price">Rs. {{ ceil($afterdiscount) }} <span>Rs.
                                                         {{ $product->price }}</span></div>
                                             </div>
                                         </div>
@@ -196,29 +204,11 @@
                 </div>
         </div>
     </div>
+@endif
     <!-- discount end -->
 
-    <!-- Banner Begin -->
-    <div class="banner">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="banner__pic" style="border: 1px solid black;">
-                        <img src="{{ asset('frontend/img/banner/banner.jpg') }}" alt="">
-                    </div>
-                {{-- </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="banner__pic">
-                        <img src="{{ asset('frontend/img/banner/banner-2.jpg') }}" alt="">
-                    </div> --}}
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Banner End -->
-
     <!-- Latest Product Section Begin -->
-    <section class="latest-product spad">
+    <section class="latest-product spad" style="padding-top: 20px;">
         <div class="container">
           <div class="row">
             <div class="col-lg-12">
@@ -264,7 +254,7 @@
                                     $discountamount = ($filterproduct->discount / 100) * $filterproduct->price;
                                     $afterdiscount = $filterproduct->price - $discountamount;
                                 @endphp
-                                <span>Rs. {{$afterdiscount}}</span>
+                                <span>Rs. {{ceil($afterdiscount)}}</span>
                                 <strike style="font-size: 15px; color: black;">Rs. {{$filterproduct->price}}</strike>
                             @else
                                 <span>Rs. {{$filterproduct->price}}</span>
@@ -306,7 +296,7 @@
                                 $discountamount = ($filterproduct->discount / 100) * $filterproduct->price;
                                 $afterdiscount = $filterproduct->price - $discountamount;
                             @endphp
-                                <span>Rs. {{$afterdiscount}}</span>
+                                <span>Rs. {{ceil($afterdiscount)}}</span>
                                 <strike style="font-size: 15px; color: black;">Rs. {{$filterproduct->price}}</strike>
                             @else
                                 <span>Rs. {{$filterproduct->price}}</span>
@@ -319,8 +309,26 @@
               </div>
             </div>
 
+    <!-- Banner Begin -->
+    <div class="banner mt-3 mb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="banner__pic" style="border: 1px solid black;">
+                        <img src="{{ asset('frontend/img/banner/banner.jpg') }}" alt="">
+                    </div>
+                <!--</div>-->
+                <!--<div class="col-lg-6 col-md-6 col-sm-6">-->
+                <!--    <div class="banner__pic">-->
+                <!--        <img src="{{ asset('frontend/img/banner/banner-2.jpg') }}" alt="">-->
+                <!--    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Banner End -->
 
-            <div class="col-lg-12">
+            <div class="col-lg-12 mb-3">
                 <div class="latest-product__text">
                   {{-- <h4>Latest Products</h4> --}}
                   <div class="row mt-5">
@@ -363,7 +371,7 @@
                                     $discountamount = ($ratedproduct->product->discount / 100) * $ratedproduct->product->price;
                                     $afterdiscount = $ratedproduct->product->price - $discountamount;
                                 @endphp
-                                    <span>Rs. {{$afterdiscount}}</span>
+                                    <span>Rs. {{ceil($afterdiscount)}}</span>
                                     <strike style="font-size: 15px; color: black;">Rs. {{$ratedproduct->product->price}}</strike>
                                 @else
                                     <span>Rs. {{$ratedproduct->product->price}}</span>
@@ -405,7 +413,7 @@
                                     $discountamount = ($ratedproduct->product->discount / 100) * $ratedproduct->product->price;
                                     $afterdiscount = $ratedproduct->product->price - $discountamount;
                                 @endphp
-                                    <span>Rs. {{$afterdiscount}}</span>
+                                    <span>Rs. {{ceil($afterdiscount)}}</span>
                                     <strike style="font-size: 15px; color: black;">Rs. {{$ratedproduct->product->price}}</strike>
                                 @else
                                     <span>Rs. {{$ratedproduct->product->price}}</span>

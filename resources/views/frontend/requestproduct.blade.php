@@ -2,15 +2,15 @@
 
 @section('content')
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg mt-3" style="background-repeat: no-repeat; background-size:cover;background-position:top center;" data-setbg="{{ asset('frontend/img/breadcrumb.jpg') }}">
+    <section class="breadcrumb-section set-bg mt-3" style="background-repeat: no-repeat; background-size:cover;background-position:top center;"w data-setbg="{{ asset('frontend/img/breadcrumb.jpg') }}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Tajamandi Shop</h2>
+                        <h2>Tajamandi Request Product</h2>
                         <div class="breadcrumb__option">
                             <a href="{{ route('index') }}">Home</a>
-                            <span>{{$subcategory->title}}</span>
+                            <span>Request Product</span>
                         </div>
                     </div>
                 </div>
@@ -23,95 +23,78 @@
     <section class="product spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-9 col-md-7">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="section-title product__discount__title text-center">
-                                    <h2>{{$subcategory->title}} Products</h2>
-                                </div>
-                            </div>
-                        </div>
-                    <div class="row">
-                        @if (count($products) == 0)
-                            <div class="col-md-12 text-center">
-                                <h3>No products yet..</h3>
-                            </div>
-                        @else
-                        @foreach ($products as $product)
-                        @if ($product->discount > 0)
-                            <div class="col-lg-3 product-container">
-                                <div class="product__discount__item product__discount">
-                                    @php
-                                        $image = DB::table('product_images')
-                                            ->where('product_id', $product->id)
-                                            ->first();
-                                        $discountamount = ($product->discount / 100) * $product->price;
-                                        $afterdiscount = $product->price - $discountamount;
-                                    @endphp
-                                    <div onclick="location.href='{{route('products', ['slug' => $product->slug, 'id'=>$product->id])}}';" style="cursor: pointer;" class="product__discount__item__pic set-bg"
-                                        data-setbg="{{ Storage::disk('uploads')->url($image->filename) }}">
-                                        <div class="product__discount__percent">-{{ $product->discount }}%</div>
-                                        <ul class="product__item__pic__hover">
-                                            @if (Auth::guest() || Auth::user()->role_id != 3)
-                                                <li><a href="javascript:void(0)" onclick="openLoginModal();"><i class="fa fa-heart" title="Add To Wishlist"></i></a></li>
-                                                <li><a href="javascript:void(0)" onclick="openLoginModal();"><i class="fa fa-shopping-cart" title="Add To Cart"></i></a></li>
-
-                                            @elseif(Auth::user()->role_id==3)
-                                                <li><a href="{{ route('addtowishlist', $product->id)}}"><i class="fa fa-heart" title="Add To Wishlist"></i></a></li>
-                                                <li><a href="{{ route('products', ['slug' => $product->slug, 'id' => $product->id]) }}"><i class="fa fa-shopping-cart" title="Add To Cart"></i></a></li>
-                                            @endif
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <b>({{$product->quantity}} {{$product->unit}})</b>
-                                        <h5><a href="{{ route('products', ['slug' => $product->slug, 'id' => $product->id]) }}">{{ $product->title }}</a></h5>
-                                        <div class="product__item__price">Rs. {{ ceil($afterdiscount) }} <span>Rs.
-                                                {{ $product->price }}</span></div>
+                <div class="col-lg-9 col-md-7 mb-5">
+                    <!-- Form Begin -->
+                    <div class="contact-form spad" style="margin-top: -5rem;">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="section-title product__discount__title text-center">
+                                        <h2>Please fill the form below</h2>
                                     </div>
                                 </div>
                             </div>
-                        @else
-                        <div class="col-lg-3 col-md-6 col-sm-6 product-container">
-                            <div class="product__item">
-                            @php
-                                $image = DB::table('product_images')
-                                    ->where('product_id', $product->id)
-                                    ->first();
-                            @endphp
-                                <div onclick="location.href='{{route('products', ['slug' => $product->slug, 'id'=>$product->id])}}';" style="cursor: pointer;" class="product__item__pic set-bg"
-                                    data-setbg="{{ Storage::disk('uploads')->url($image->filename)}}">
-                                    <ul class="product__item__pic__hover">
-                                        @if (Auth::guest() || Auth::user()->role_id != 3)
-                                            <li><a href="javascript:void(0)" onclick="openLoginModal();"><i class="fa fa-heart" title="Add To Wishlist"></i></a></li>
-                                            <li><a href="javascript:void(0)" onclick="openLoginModal();"><i class="fa fa-shopping-cart" title="Add To Cart"></i></a></li>
-
-                                        @elseif(Auth::user()->role_id==3)
-                                            <li><a href="{{ route('addtowishlist', $product->id)}}"><i class="fa fa-heart" title="Add To Wishlist"></i></a></li>
-                                            <li><a href="{{ route('products', ['slug' => $product->slug, 'id' => $product->id]) }}"><i class="fa fa-shopping-cart" title="Add To Cart"></i></a></li>
-                                        @endif
-                                    </ul>
+                            <form action="{{route('storeProductRequest')}}" method="POST">
+                                @csrf
+                                @method('POST')
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <label for="name">Full Name:</label>
+                                        <input type="text" placeholder="Your name" name="name" value="{{@old('name')}}">
+                                        @error('name')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <label for="phone">Contact No:</label>
+                                        <input type="text" placeholder="Contact Information" name="phone" value="{{@old('phone')}}">
+                                        @error('phone')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <label for="address">Address:</label>
+                                        <input type="text" placeholder="Address Information" name="address" value="{{@old('address')}}">
+                                        @error('address')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <label for="email">Email:</label>
+                                        <input type="text" placeholder="Enter Email Address" name="email" value="{{@old('email')}}">
+                                        @error('email')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <label for="product">Product Name:</label>
+                                        <input type="text" placeholder=" Eg: Gas Cylinder" name="product" value="{{@old('product')}}">
+                                        @error('product')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <label for="description">Description of Product:</label>
+                                        <textarea placeholder="Write Description of Product" name="description"></textarea>
+                                        @error('description')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
+                                        <button type="submit" class="site-btn">Submit</button>
+                                    </div>
                                 </div>
-                                <div class="product__item__text">
-                                    <b>({{$product->quantity}} {{$product->unit}})</b>
-                                        <h5><a href="{{route('products', ['slug' => $product->slug, 'id'=>$product->id])}}">{{$product->title}}</a></h5>
-                                        <div class="product__item__price">Rs. {{$product->price}}</div>
-                                </div>
-                            </div>
+                            </form>
                         </div>
-                        @endif
-                    @endforeach
-                        @endif
-
                     </div>
                     <div class="text-center">
-                        {{ $products->links() }}
+
                     </div>
-                    {{-- <div class="product__pagination text-center">
-                        <a href="#">1</a>
+                    {{-- <div class="product__pagination text-center"> --}}
+
+                        {{-- <a href="#">1</a>
                         <a href="#">2</a>
                         <a href="#">3</a>
-                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-                    </div> --}}
+                        <a href="#"><i class="fa fa-long-arrow-right"></i></a> --}}
+                    {{-- </div> --}}
                 </div>
                 <div class="col-lg-3 col-md-5">
                     <div class="sidebar">
@@ -237,7 +220,7 @@
                                                         $discountamount = ($product->discount / 100) * $product->price;
                                                         $afterdiscount = $product->price - $discountamount;
                                                     @endphp
-                                                        <span>Rs. {{ceil($afterdiscount)}}</span>
+                                                        <span>Rs. {{$afterdiscount}}</span>
                                                         <strike style="font-size: 15px; color: black;">Rs. {{$product->price}}</strike>
                                                     @else
                                                         <span>Rs. {{$product->price}}</span>
@@ -278,7 +261,7 @@
                                                         $discountamount = ($product->discount / 100) * $product->price;
                                                         $afterdiscount = $product->price - $discountamount;
                                                     @endphp
-                                                        <span>Rs. {{ceil($afterdiscount)}}</span>
+                                                        <span>Rs. {{$afterdiscount}}</span>
                                                         <strike style="font-size: 15px; color: black;">Rs. {{$product->price}}</strike>
                                                     @else
                                                         <span>Rs. {{$product->price}}</span>
@@ -329,7 +312,7 @@
                                                         $discountamount = ($productis->discount / 100) * $productis->price;
                                                         $afterdiscount = $productis->price - $discountamount;
                                                     @endphp
-                                                        <span>Rs. {{ceil($afterdiscount)}}</span>
+                                                        <span>Rs. {{$afterdiscount}}</span>
                                                         <strike style="font-size: 15px; color: black;">Rs. {{$productis->price}}</strike>
                                                     @else
                                                         <span>Rs. {{$productis->price}}</span>
@@ -373,7 +356,7 @@
                                                         $discountamount = ($productis->discount / 100) * $productis->price;
                                                         $afterdiscount = $productis->price - $discountamount;
                                                     @endphp
-                                                        <span>Rs. {{ceil($afterdiscount)}}</span>
+                                                        <span>Rs. {{$afterdiscount}}</span>
                                                         <strike style="font-size: 15px; color: black;">Rs. {{$productis->price}}</strike>
                                                     @else
                                                         <span>Rs. {{$productis->price}}</span>
@@ -388,8 +371,10 @@
                     </div>
                 </div>
 
+
             </div>
         </div>
     </section>
     <!-- Product Section End -->
 @endsection
+

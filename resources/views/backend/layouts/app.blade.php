@@ -93,7 +93,14 @@
                                         <li><a href="{{ route('vendor.create') }}">Register new vendor</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="{{route('order.index')}}"><i class="fa fa-exchange"></i>Our Orders</a>
+                                {{-- <li><a href="{{route('order.index')}}"><i class="fa fa-exchange"></i>Our Orders</a></li> --}}
+                                <li><a><i class="fa fa-exchange"></i>Our Orders <span
+                                    class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ route('order.index') }}">All Orders</a></li>
+                                        <li><a href="{{ route('requestorder.index') }}">All Request Orders</a></li>
+                                    </ul>
+                                </li>
                                     <li><a href="{{route('onlyusers')}}"><i class="fa fa-user"></i>Our Customers</a>
                                 </li>
                             </ul>
@@ -162,23 +169,32 @@
                                 @php
                                     $neworder = DB::table('notifications')->where('type','App\Notifications\NewOrderNotification')->where('is_read', 0)->count();
                                     $newuser = DB::table('notifications')->where('type','App\Notifications\NewUserNotification')->where('is_read', 0)->count();
+                                    $newrequest = DB::table('notifications')->where('type','App\Notifications\RequestOrderNotification')->where('is_read', 0)->count();
                                @endphp
                                 <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1"
                                     data-toggle="dropdown" aria-expanded="false">
                                     <i class="fa fa-bell"></i>
-                                    @if ($neworder > 0 && $newuser == 0)
+                                    @if ($neworder == 0 && $newuser == 0 && $newrequest == 0)
+                                        <span class="badge bg-green">0</span>
+                                    @elseif($neworder == 0 && $newuser == 0 && $newrequest == 1)
                                         <span class="badge bg-green">1</span>
-                                    @elseif($newuser > 0 &&$neworder == 0)
+                                    @elseif($neworder == 0 && $newuser == 1 && $newrequest == 0)
                                         <span class="badge bg-green">1</span>
-                                    @elseif($newuser > 0 && $neworder > 0)
+                                    @elseif($neworder == 0 && $newuser == 1 && $newrequest == 1)
+                                        <span class="badge bg-green">2</span>
+                                    @elseif($neworder == 1 && $newuser == 0 && $newrequest == 0)
+                                        <span class="badge bg-green">1</span>
+                                    @elseif($neworder == 1 && $newuser == 0 && $newrequest == 1)
+                                        <span class="badge bg-green">2</span>
+                                    @elseif($neworder == 1 && $newuser == 1 && $newrequest == 0)
                                         <span class="badge bg-green">2</span>
                                     @else
-                                        <span class="badge bg-green">0</span>
+                                        <span class="badge bg-green">3</span>
                                     @endif
                                 </a>
                                 <ul class="dropdown-menu list-unstyled msg_list" role="menu"
                                     aria-labelledby="navbarDropdown1">
-                                    @if ($neworder > 0 && $newuser == 0)
+                                    @if ($neworder > 0)
                                         <li class="nav-item">
                                             <a class="dropdown-item" href="{{route('order.index')}}">
                                                 <span>
@@ -186,15 +202,16 @@
                                                 </span>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
+                                        {{-- <li class="nav-item">
                                             <div class="text-center">
                                                 <a class="dropdown-item" href="{{route('notificationsread')}}">
                                                     <strong>Mark all as read.</strong>
                                                     <i class="fa fa-angle-right"></i>
                                                 </a>
                                             </div>
-                                        </li>
-                                    @elseif ($newuser > 0 && $neworder == 0)
+                                        </li> --}}
+                                    @endif
+                                    @if ($newuser > 0)
                                         <li class="nav-item">
                                             <a class="dropdown-item" href="{{route('user.index')}}">
                                                 <span>
@@ -202,29 +219,17 @@
                                                 </span>
                                             </a>
                                         </li>
+                                    @endif
+                                    @if ($newrequest > 0)
                                         <li class="nav-item">
-                                            <div class="text-center">
-                                                <a class="dropdown-item" href="{{route('notificationsread')}}">
-                                                    <strong>Mark all as read.</strong>
-                                                    <i class="fa fa-angle-right"></i>
-                                                </a>
-                                            </div>
-                                        </li>
-                                    @elseif ($newuser > 0 && $neworder > 0)
-                                        <li class="nav-item">
-                                            <a class="dropdown-item" href="{{route('user.index')}}">
+                                            <a class="dropdown-item" href="{{route('requestorder.index')}}">
                                                 <span>
-                                                    <i class="fa fa-user"></i><span style="font-size: 15px;"> &nbsp;<b>{{$newuser}}</b> new user has just registerd.</span>
+                                                    <i class="fa fa-user"></i><span style="font-size: 15px;"> &nbsp;<b>{{$newrequest}}</b> new product request available.</span>
                                                 </span>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a class="dropdown-item" href="{{route('order.index')}}">
-                                                <span>
-                                                    <i class="fa fa-exchange"></i><span style="font-size: 15px;"> &nbsp;<b>{{$neworder}}</b> new order has just arrived.</span>
-                                                </span>
-                                            </a>
-                                        </li>
+                                    @endif
+                                    @if ($neworder > 0 || $newuser > 0 || $newrequest > 0)
                                         <li class="nav-item">
                                             <div class="text-center">
                                                 <a class="dropdown-item" href="{{route('notificationsread')}}">
