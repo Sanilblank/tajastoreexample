@@ -1,4 +1,14 @@
 @extends('frontend.layouts.app')
+@push('styles')
+<style>
+    a:hover,
+    a:focus {
+        text-decoration: none;
+        outline: none;
+        color: #7fad39;
+    }
+</style>
+@endpush
 
 @section('content')
     <!-- Breadcrumb Section Begin -->
@@ -98,6 +108,7 @@
                                 <div class="checkout__order__subtotal">Subtotal <span>Rs. {{$grandtotal}}</span></div>
                                 <div class="checkout__order__subtotal">Delievery Charge <span>Rs. 50</span></div>
                                 <div class="checkout__order__total">Total <span>Rs. {{$grandtotal + 50}}</span></div>
+                                <p style="color: red">Wanna make request for product not available in website?<a href="{{route('requestProduct')}}"> Click Here</a></p>
                                 {{-- <div class="checkout__input__checkbox">
                                     <label for="acc-or">
                                         Create an account?

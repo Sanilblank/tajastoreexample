@@ -19,6 +19,13 @@
     </section>
     <!-- Breadcrumb Section End -->
 
+    @php
+        if(!Auth::guest())
+        {
+            $address = DB::table('delievery_addresses')->where('user_id', Auth::user()->id)->where('is_default', 1)->first();
+        }
+    @endphp
+
     <!-- Product Section Begin -->
     <section class="product spad">
         <div class="container">
@@ -37,51 +44,117 @@
                             <form action="{{route('storeProductRequest')}}" method="POST">
                                 @csrf
                                 @method('POST')
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6">
-                                        <label for="name">Full Name:</label>
-                                        <input type="text" placeholder="Your name" name="name" value="{{@old('name')}}">
-                                        @error('name')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
+                                @if (!Auth::guest())
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6">
+                                            <label for="name">Full Name:</label>
+                                            <input type="text" placeholder="Your name" name="name" value="{{@old('name') ? @old('name') : (($address)?$address->firstname .' '. $address->lastname:'')}}">
+                                            @error('name')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <label for="phone">Contact No:</label>
+                                            <input type="text" placeholder="Contact Information" name="phone" value="{{@old('phone') ? @old('phone') : (($address)?$address->phone:'')}}">
+                                            @error('phone')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <label for="address">Address:</label>
+                                            <input type="text" placeholder="Address Information" name="address" value="{{@old('address') ? @old('address') : (($address)?$address->address. ', ' . $address->town:'')}}">
+                                            @error('address')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <label for="email">Email:</label>
+                                            <input type="text" placeholder="Enter Email Address" name="email" value="{{@old('email') ? @old('email') : (($address)?$address->email:'')}}">
+                                            @error('email')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <label for="product">Product Name:</label>
+                                            <input type="text" placeholder=" Eg: Gas Cylinder" name="product" value="{{@old('product')}}">
+                                            @error('product')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <label for="description">Description of Product:</label>
+                                            <textarea placeholder="Write Description of Product" name="description"></textarea>
+                                            @error('description')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-12">
+
+                                                    <p style="color: red">Note*: Your order might be picked up seperately from retail shop so, bill for request order will be seperate and can be high.<br><br>
+                                                    Delivery charge will also be taken seperately. You will receive a call to confirm your requested order.</p>
+
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="site-btn">Submit</button>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <label for="phone">Contact No:</label>
-                                        <input type="text" placeholder="Contact Information" name="phone" value="{{@old('phone')}}">
-                                        @error('phone')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
+                                @else
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6">
+                                            <label for="name">Full Name:</label>
+                                            <input type="text" placeholder="Your name" name="name" value="{{@old('name')}}">
+                                            @error('name')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <label for="phone">Contact No:</label>
+                                            <input type="text" placeholder="Contact Information" name="phone" value="{{@old('phone')}}">
+                                            @error('phone')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <label for="address">Address:</label>
+                                            <input type="text" placeholder="Address Information" name="address" value="{{@old('address')}}">
+                                            @error('address')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <label for="email">Email:</label>
+                                            <input type="text" placeholder="Enter Email Address" name="email" value="{{@old('email')}}">
+                                            @error('email')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-6 col-md-6">
+                                            <label for="product">Product Name:</label>
+                                            <input type="text" placeholder=" Eg: Gas Cylinder" name="product" value="{{@old('product')}}">
+                                            @error('product')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <label for="description">Description of Product:</label>
+                                            <textarea placeholder="Write Description of Product" name="description"></textarea>
+                                            @error('description')
+                                                <p class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="col-lg-12">
+
+                                                    <p style="color: red">Note*: Your order might be picked up seperately from retail shop so, bill for request order will be seperate and can be high.<br><br>
+                                                    Delivery charge will also be taken seperately. You will receive a call to confirm your requested order.</p>
+
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="site-btn">Submit</button>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <label for="address">Address:</label>
-                                        <input type="text" placeholder="Address Information" name="address" value="{{@old('address')}}">
-                                        @error('address')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <label for="email">Email:</label>
-                                        <input type="text" placeholder="Enter Email Address" name="email" value="{{@old('email')}}">
-                                        @error('email')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <label for="product">Product Name:</label>
-                                        <input type="text" placeholder=" Eg: Gas Cylinder" name="product" value="{{@old('product')}}">
-                                        @error('product')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <label for="description">Description of Product:</label>
-                                        <textarea placeholder="Write Description of Product" name="description"></textarea>
-                                        @error('description')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
-                                        <button type="submit" class="site-btn">Submit</button>
-                                    </div>
-                                </div>
+
+                                @endif
+
                             </form>
                         </div>
                     </div>
