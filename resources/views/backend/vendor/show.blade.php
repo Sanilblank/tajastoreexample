@@ -27,7 +27,7 @@
             </div>
         @endif
 
-        <h1 class="mt-3">Vendor Products => {{$vendor->name}} <a href="{{ route('vendor.index') }}" class="btn btn-primary btn-sm"> <i
+        <h1 class="mt-3">Vendor Products => {{$vendor->name}} <a href="{{ route('vendors.index') }}" class="btn btn-primary btn-sm"> <i
             class="fa fa-eye" aria-hidden="true"></i> Back to Vendors</a></h1>
         <div class="card mt-3">
             <div class="card-body table-responsive">
@@ -62,7 +62,7 @@
 
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('vendor.show', $vendor->id) }}",
+                ajax: "{{ route('vendors.show', $vendor->id) }}",
                 columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
                         {data: 'image', name: 'image'},
                         {data: 'info', name: 'info'},

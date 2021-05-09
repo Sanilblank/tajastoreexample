@@ -27,9 +27,9 @@ class VendorController extends Controller
                 return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function ($row) {
-                        $editurl = route('vendor.edit', $row->id);
-                        $showurl = route('vendor.show', $row->id);
-                        $deleteurl = route('vendor.destroy', $row->id);
+                        $editurl = route('vendors.edit', $row->id);
+                        $showurl = route('vendors.show', $row->id);
+                        $deleteurl = route('vendors.destroy', $row->id);
                         $csrf_token = csrf_token();
                         $btn = "
                         <a href='$showurl' class='edit btn btn-success btn-sm'>View Products</a>

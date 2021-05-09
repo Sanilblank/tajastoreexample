@@ -132,7 +132,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/addproductorder', [OrderController::class, 'addproductorder'])->name('addproductorder');
     Route::put('/productorder', [OrderController::class, 'productorder'])->name('productorder');
 
-    Route::resource('vendor', VendorController::class);
+    Route::resource('vendors', VendorController::class);
     Route::put('deleteproductimage/{id}', [ProductController::class, 'deleteproductimage'])->name('deleteproductimage');
     Route::post('addmoreproductimages/{id}', [ProductController::class, 'addmoreproductimages'])->name('addmoreproductimages');
     Route::resource('product', ProductController::class);

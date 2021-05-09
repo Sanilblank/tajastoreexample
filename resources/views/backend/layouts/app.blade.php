@@ -89,8 +89,8 @@
                                 <li><a><i class="fa fa-industry"></i>Our Vendors <span
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="{{ route('vendor.index') }}">Our vendors</a></li>
-                                        <li><a href="{{ route('vendor.create') }}">Register new vendor</a></li>
+                                        <li><a href="{{ route('vendors.index') }}">Our vendors</a></li>
+                                        <li><a href="{{ route('vendors.create') }}">Register new vendor</a></li>
                                     </ul>
                                 </li>
                                 {{-- <li><a href="{{route('order.index')}}"><i class="fa fa-exchange"></i>Our Orders</a></li> --}}

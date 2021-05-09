@@ -4,9 +4,9 @@
 @endpush
 @section('content')
 <div class="right_col" role="main">
-    <h1 class="mt-3">Edit Vendor  <a href="{{route('vendor.index')}}" class="btn btn-primary btn-sm"> <i class="fa fa-plus" aria-hidden="true"></i> View Vendors</a></h1>
+    <h1 class="mt-3">Edit Vendor  <a href="{{route('vendors.index')}}" class="btn btn-primary btn-sm"> <i class="fa fa-eye" aria-hidden="true"></i> View Vendors</a></h1>
     <div class="card mt-3">
-            <form action="{{route('vendor.update', $vendor->id)}}" method="POST" class="bg-light p-3">
+            <form action="{{route('vendors.update', $vendor->id)}}" method="POST" class="bg-light p-3">
                 @csrf
                 @method('PUT')
                 <div class="row">
