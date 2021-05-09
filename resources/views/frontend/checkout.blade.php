@@ -108,7 +108,7 @@
                                 <div class="checkout__order__subtotal">Subtotal <span>Rs. {{$grandtotal}}</span></div>
                                 <div class="checkout__order__subtotal">Delievery Charge <span>Rs. 50</span></div>
                                 <div class="checkout__order__total">Total <span>Rs. {{$grandtotal + 50}}</span></div>
-                                <p style="color: red">Wanna make request for product not available in website?<a href="{{route('requestProduct')}}"> Click Here</a></p>
+                                <p style="color: red">Want to make request for product not available in website?<a href="{{route('requestProduct')}}"> Click Here</a></p>
                                 {{-- <div class="checkout__input__checkbox">
                                     <label for="acc-or">
                                         Create an account?

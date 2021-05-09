@@ -1,12 +1,3 @@
-/*  ---------------------------------------------------
-    Template Name: Ogani
-    Description:  Ogani eCommerce  HTML Template
-    Author: Colorlib
-    Author URI: https://colorlib.com
-    Version: 1.0
-    Created: Colorlib
----------------------------------------------------------  */
-
 "use strict";
 
 (function ($) {
@@ -54,12 +45,33 @@
         $(".humberger__menu__overlay").removeClass("active");
         $("body").removeClass("over_hid");
     });
+    //Humberger Menu cat
+
+    $(".humberger__open2").on("click", function () {
+        $(".humberger__menu__wrapper2").addClass(
+            "show__humberger__menu__wrapper2"
+        );
+        $(".humberger__menu__overlay2").addClass("active");
+        $("body").addClass("over_hid");
+    });
+
+    $(".humberger__menu__overlay2").on("click", function () {
+        $(".humberger__menu__wrapper2").removeClass(
+            "show__humberger__menu__wrapper2"
+        );
+        $(".humberger__menu__overlay2").removeClass("active");
+        $("body").removeClass("over_hid");
+    });
 
     /*------------------
 		Navigation
 	--------------------*/
     $(".mobile-menu").slicknav({
         prependTo: "#mobile-menu-wrap",
+        allowParentLinks: true,
+    });
+    $(".mobile-menu-cat").slicknav({
+        prependTo: "#mobile-menu-cat-wrap",
         allowParentLinks: true,
     });
 
@@ -137,7 +149,7 @@
         autoplay: true,
         responsive: {
             320: {
-                items: 1,
+                items: 2,
             },
 
             480: {

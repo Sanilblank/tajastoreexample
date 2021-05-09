@@ -30,7 +30,6 @@
     </div>
     {{-- <div class="humberger__menu__widget">
         <div class="header__top__right__auth">
-
         </div>
     </div> --}}
     <nav class="humberger__menu__nav mobile-menu">
@@ -73,7 +72,7 @@
             </li> --}}
             <li><a href="{{ route('requestProduct') }}">Request Product</a></li>
             <li><a href="{{ route('contact') }}">Contact</a></li>
-            <!--<li><a href="{{route('about')}}">About Us</a></li>-->
+            {{-- <li><a href="{{route('about')}}">About Us</a></li> --}}
         </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
@@ -171,23 +170,62 @@
                         {{-- <li><a href="./blog.html">Blog</a></li> --}}
                         <li><a href="{{ route('requestProduct') }}">Request Product</a></li>
                         <li><a href="{{ route('contact') }}">Contact</a></li>
-                        <!--<li><a href="{{route('about')}}">About Us</a></li>-->
+                        {{-- <li><a href="{{route('about')}}">About Us</a></li> --}}
                     </ul>
                 </nav>
             </div>
             <div class="col-lg-3">
                 <div class="header__cart">
-                    <ul>
+                    <ul class="nav-right">
                         @if (Auth::guest() || Auth::user()->role_id != 3)
                             <li><a href="javascript:void(0)" onclick="openLoginModal();"><i class="fa fa-heart"></i> <span>0</span></a></li>
-                            <li><a href="javascript:void(0)" onclick="openLoginModal();"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+                            <li class="cart-icon"><a href="javascript:void(0)" onclick="openLoginModal();" ><i class="fa fa-shopping-bag"></i> <span>0</span> </a>
+
+
+                           </li>
+                           {{-- <li class="cart-price">Rs.2000</li> --}}
                         @elseif(Auth::user()->role_id==3)
                             @php
-                                $cartproducts = DB::table('carts')->where('user_id', Auth::user()->id)->get();
+                                $cartproducts = DB::table('carts')->where('user_id', Auth::user()->id)->latest()->get();
                                 $wishlistproducts = DB::table('wishlists')->where('user_id', Auth::user()->id)->get();
                             @endphp
                             <li><a href="{{route('wishlist')}}"><i class="fa fa-heart"></i> <span>{{count($wishlistproducts)}}</span></a></li>
-                            <li><a href="{{ route('cart') }}"><i class="fa fa-shopping-bag"></i> <span>{{count($cartproducts)}}</span></a></li>
+                            <li class="cart-icon"><a href="{{ route('cart') }}"><i class="fa fa-shopping-bag"></i> <span>{{count($cartproducts)}}</span></a>
+                                <div class="cart-hover">
+                                    <div class="select-items">
+                                        <table>
+                                            <tbody>
+                                                @foreach ($cartproducts as $cartproduct)
+                                                    @php
+                                                        $product = DB::table('products')->where('id', $cartproduct->product_id)->first();
+                                                        $productimage = DB::table('product_images')->where('product_id', $product->id)->first();
+                                                    @endphp
+                                                    <tr>
+                                                        <td class="si-pic"><img src="{{Storage::disk('uploads')->url($productimage->filename)}}" alt="" style="max-width: 100px;"></td>
+                                                        <td class="si-text">
+                                                            <div class="product-selected">
+                                                                <p>Rs.{{$cartproduct->price}} x {{$cartproduct->quantity}}</p>
+                                                                <h6>{{$product->title}}</h6>
+                                                            </div>
+                                                        </td>
+                                                        <td class="si-close">
+                                                            <i class="ti-close"></i>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {{-- <div class="select-total">
+                                        <span>Total:</span>
+                                        <h5>$120.00</h5>
+                                    </div> --}}
+                                    <div class="select-button">
+                                        <a href="{{ route('cart') }}" class="primary-btn view-card">VIEW CART</a>
+                                        <a href="{{route('checkout', Auth::user()->id)}}" class="primary-btn checkout-btn">CHECK OUT</a>
+                                    </div>
+                                </div>
+                            </li>
                         @endif
                     </ul>
                 </div>
@@ -208,10 +246,10 @@
             <div class="col-lg-3">
                 <div class="dropdown">
                     @php
-                        $categories = DB::table('categories')->where('status', 1)->get();
+                        $categories = DB::table('categories')->latest()->get();
                     @endphp
-                    <button class="btn btn-success dropdown-toggle categorydrop " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars px-4"></i>
-                      All Categories
+                    <button class="btn btn-success categorydrop humberger__open2" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars px-4"></i>
+                      All Departments
                     </button>
                     <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                         @foreach ($categories as $category)
@@ -223,10 +261,11 @@
                                 @endphp
                                 @if (count($subcategories) > 0)
                                     @foreach ($subcategories as $item)
-                                        <a href="{{route('subcategories', $item->slug)}}"><li class="dropdown-item">{{$item->title}}</li></a>
+                                        <li class="dropdown-item"><a href="{{route('subcategories', $item->slug)}}">{{$item->title}}</a></li>
                                     @endforeach
                                 @else
                                     <li class="dropdown-item"><a href="#">No Subcategories</a></li>
+
                                 @endif
 
                             </ul>
@@ -235,7 +274,56 @@
                       </ul>
                 </div>
 
+<!-- Testing -->
+<div class="humberger__menu__overlay2"></div>
+<div class="humberger__menu__wrapper2">
+    <div class="humberger__menu__logo">
+        <a href="{{route('index')}}"><img src="{{Storage::disk('uploads')->url($setting->headerImage)}}" alt="" style="max-width: 150px; max-height: 170px;"></a>
+    </div>
+    <nav class="humberger__menu__nav2 mobile-menu-cat">
+    @php
+                        $categories = DB::table('categories')->latest()->get();
+                    @endphp
+        <ul>
+        @foreach ($categories as $category)
+
+            <li><a href="#">{{$category->title}}</a>
+                <ul class="header__menu__dropdown text-center">
+                @php
+                                    $subcategories = DB::table('subcategories')->where('category_id', $category->id)->get();
+                                @endphp
+                                @if (count($subcategories) > 0)
+                                    @foreach ($subcategories as $item)
+                                    <li><a href="{{route('subcategories', $item->slug)}}">{{$item->title}}</a></li>
+                                    @endforeach
+                                    @else
+                                    <li><a href="#">No Subcategories</a></li>
+                                @endif
+                </ul>
+            </li>
+
+            @endforeach
+        </ul>
+    </nav>
+    <div id="mobile-menu-cat-wrap"></div>
+</div>
+
+
+
+
+
+
             </div>
+
+
+
+
+
+
+
+
+
+
             <div class="col-lg-9">
                 <div class="hero__search">
                     <div class="hero__search__form">
