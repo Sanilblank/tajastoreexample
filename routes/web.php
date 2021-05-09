@@ -124,6 +124,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/updatequantityadmin/{id}', [OrderController::class, 'updatequantityadmin'])->name('updatequantityadmin');
     Route::put('/changeOrderStatus/{id}', [OrderController::class, 'changeOrderStatus'])->name('changeOrderStatus');
     Route::resource('order', OrderController::class);
+    Route::put('/addproductorder', [OrderController::class, 'addproductorder'])->name('addproductorder');
+    Route::put('/productorder', [OrderController::class, 'productorder'])->name('productorder');
+
     Route::resource('vendor', VendorController::class);
     Route::put('deleteproductimage/{id}', [ProductController::class, 'deleteproductimage'])->name('deleteproductimage');
     Route::post('addmoreproductimages/{id}', [ProductController::class, 'addmoreproductimages'])->name('addmoreproductimages');

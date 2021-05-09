@@ -3,7 +3,7 @@
         "HEX1MVKAVJ",
         "1434922ed0c5647c3be5e56cc21ce36f"
     );
-    var index = client.initIndex("example_products");
+    var index = client.initIndex("tajamandi_products");
     var enterPressed = false;
     //initialize autocomplete on search input (ID selector must match)
     autocomplete(
@@ -17,13 +17,13 @@
             templates: {
                 //'suggestion' templating function used to render a single suggestion
                 suggestion: function (suggestion) {
+
                     const markup = `
                         <div class="algolia-result">
+
                             <span>
-
-                                ${suggestion._highlightResult.title.value}
+                                ${suggestion._highlightResult.title.value} (${suggestion._highlightResult.quantity.value} ${suggestion._highlightResult.unit.value})
                             </span>
-
                         </div>
                     `;
 
@@ -40,7 +40,7 @@
         }
     ).on("autocomplete:selected", function (event, suggestion, dataset) {
         window.location.href =
-            window.location.origin + "/search/" + suggestion.slug;
+            window.location.origin + "/products/" + suggestion.slug + "/" + suggestion.id;
         enterPressed = true;
     });
 })();

@@ -17,7 +17,7 @@
         </div>
     @endif
 
-    <h1 class="mt-3">Our Orders </h1>
+    <h1 class="mt-3">Our Orders <a href="{{route('order.create')}}" class="btn btn-primary btn-sm"> <i class="fa fa-plus" aria-hidden="true"></i> Register New Order</a></h1>
     <div class="card mt-3">
         <div class="card-body table-responsive">
             <table class="table table-bordered yajra-datatable text-center">

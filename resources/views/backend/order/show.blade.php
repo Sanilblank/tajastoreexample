@@ -2,6 +2,8 @@
 @push('styles')
 <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Algolia Search -->
+    <link rel="stylesheet" href="{{ asset('backend/css/maps/addalgolia.css') }}">
 @endpush
 @section('content')
 <div class="right_col" role="main">
@@ -82,7 +84,39 @@
 
 
         <div class="col-md-12 mt-2">
-            <div class="card">
+            @if ($order->status_id != 5)
+                <div class="card px-3 py-3 mt-2">
+                    <div class="card-header">
+                        <h3>Add Other Product</h3>
+                    </div>
+                    <div class="card-body">
+
+                            <form action="{{route('addproductorder')}}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                            {{-- <label for="product">Add Other Product: </label> --}}
+                                                <div class="aa-input-container" id="aa-input-container">
+                                                    <input type="text" id="aa-search-input" class="aa-input-search" placeholder="Search Product" name="product_id" value="{{@old('product_id')}}"
+                                                    autocomplete="off" />
+                                                </div>
+                                                <input type="hidden" value="{{$order->id}}" name="order_id">
+                                                @error('product_id')
+                                                    <p class="text-danger">{{$message}}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button class="btn btn-primary" type="submit">+ Add</button>
+                                        </div>
+                                    </div>
+                            </form>
+                    </div>
+                </div>
+            @endif
+            <div class="card mt-3">
                 <div class="card-header">
                     <h3>Order Summary</h3>
                 </div>
@@ -102,6 +136,31 @@
                             </ul>
                               <div class="tab-content mt-2" id="myTabContent">
                                 <div class="tab-pane fade active show" id="shipping" role="tabcard" aria-labelledby="shipping-tab">
+                                    <!--@if ($order->status_id != 5)-->
+                                    <!--    <form action="{{route('addproductorder')}}" method="POST">-->
+                                    <!--        @csrf-->
+                                    <!--        @method('POST')-->
+                                    <!--        <div class="row">-->
+                                    <!--            <div class="col-md-6">-->
+                                    <!--                <div class="form-group">-->
+                                    <!--                    {{-- <label for="product">Add Other Product: </label> --}}-->
+                                    <!--                    <div class="aa-input-container" id="aa-input-container">-->
+                                    <!--                        <input type="text" id="aa-search-input" class="aa-input-search" placeholder="Add Other Product" name="product_id" value="{{@old('product_id')}}"-->
+                                    <!--                            autocomplete="off" />-->
+                                    <!--                    </div>-->
+                                    <!--                    <input type="hidden" value="{{$order->id}}" name="order_id">-->
+                                    <!--                    @error('product_id')-->
+                                    <!--                        <p class="text-danger">{{$message}}</p>-->
+                                    <!--                    @enderror-->
+                                    <!--                </div>-->
+                                    <!--            </div>-->
+                                    <!--            <div class="col-md-2">-->
+                                    <!--                <button class="btn btn-primary" type="submit">+ Add</button>-->
+                                    <!--            </div>-->
+                                    <!--        </div>-->
+
+                                    <!--    </form>-->
+                                    <!--@endif-->
                                     <div class="table table-responsive">
                                         <table class="table text-center">
                                             <thead>
@@ -109,7 +168,6 @@
                                                     <th></th>
                                                     <th></th>
                                                     <th class="text-center">Product Info</th>
-                                                    <th class="text-center">Vendor</th>
                                                     <th class="text-center">Unit Price</th>
                                                     <th class="text-center">Quantity</th>
                                                     <th class="text-center">Total (Rs.)</th>
@@ -117,48 +175,46 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($ordered_products as $ordered_product)
-                                                    <tr>
-                                                        <td style="vertical-align: inherit">
-                                                            <a href="{{route('deletefromorder', $ordered_product->id)}}" class="btn btn-danger remove" title="Cancel this product">x</a>
-                                                        </td>
-                                                        <td style="vertical-align: inherit">
-                                                            @php
-                                                                $product_image = DB::table('product_images')->where('product_id', $ordered_product->product_id)->first();
-                                                            @endphp
-                                                            <img src="{{Storage::disk('uploads')->url($product_image->filename)}}" alt="{{$ordered_product->product->title}}" style="max-height: 100px;">
-                                                        </td>
-                                                        <td style="vertical-align: inherit">
-                                                            <b>{{$ordered_product->product->title}}</b>
-                                                            <p>({{$ordered_product->product->quantity}} {{$ordered_product->product->unit}})</p>
-                                                        </td>
-                                                        <td style="vertical-align: inherit">
-                                                            <b>{{$ordered_product->vendor->name}}</b>
-                                                        </td>
-                                                        <td style="vertical-align: inherit">Rs. {{$ordered_product->price}}</td>
-                                                        <td style="width: 50px;">
-                                                            <form action="{{route('updatequantityadmin', $ordered_product->id)}}" method="POST" class="text-center">
-                                                                @csrf
-                                                                @method('PUT')
-                                                                <div class="form-group">
-                                                                    <input type="number" class="form-control text-center" min="1" value="{{$ordered_product->quantity}}" name="quantity"/>
-                                                                </div>
+                                                    @if ($ordered_product->quantity > 0)
+                                                        <tr>
+                                                            <td style="vertical-align: inherit">
+                                                                <a href="{{route('deletefromorder', $ordered_product->id)}}" class="btn btn-danger remove" title="Cancel this product">x</a>
+                                                            </td>
+                                                            <td style="vertical-align: inherit">
+                                                                @php
+                                                                    $product_image = DB::table('product_images')->where('product_id', $ordered_product->product_id)->first();
+                                                                @endphp
+                                                                <img src="{{Storage::disk('uploads')->url($product_image->filename)}}" alt="{{$ordered_product->product->title}}" style="max-height: 100px;">
+                                                            </td>
+                                                            <td style="vertical-align: inherit">
+                                                                <b>{{$ordered_product->product->title}}</b>
+                                                                <p>({{$ordered_product->product->quantity}} {{$ordered_product->product->unit}})</p>
+                                                            </td>
+                                                            <td style="vertical-align: inherit">Rs. {{$ordered_product->price}}</td>
+                                                            <td style="width: 50px;">
+                                                                <form action="{{route('updatequantityadmin', $ordered_product->id)}}" method="POST" class="text-center">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <div class="form-group">
+                                                                        <input type="number" class="form-control text-center" min="1" value="{{$ordered_product->quantity}}" name="quantity"/>
+                                                                    </div>
 
-                                                                @if ($ordered_product->status_id == 6)
-                                                                    <p class="text-center">(This product is cancelled.)</p>
-                                                                @elseif($ordered_product->status_id == 5)
-                                                                    <p class="mt-1">({{$ordered_product->product->unit_info}} units left in stock)</p>
-                                                                @else
-                                                                    <button type="submit" class="btn btn-success">Update</button>
-                                                                    <p class="mt-1">({{$ordered_product->product->unit_info}} units left in stock)</p>
-                                                                @endif
-                                                                </form>
-                                                        </td>
-                                                        <td style="vertical-align: inherit">Rs. {{$ordered_product->price * $ordered_product->quantity}}</td>
-                                                    </tr>
+                                                                    @if ($ordered_product->status_id == 6 || $ordered_product->status_id == 5)
+                                                                    <p class="h6" style="color: red">(Canceled)</p>
+                                                                    @else
+                                                                        <button type="submit" class="btn btn-success">Update</button>
+                                                                    @endif
+                                                                  </form>
+
+                                                                  {{-- <p class="mt-1">({{$ordered_product->product->quantity}} left in stock)</p> --}}
+                                                            </td>
+                                                            <td style="vertical-align: inherit">Rs. {{$ordered_product->price * $ordered_product->quantity}}</td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                                     @php
                                                         $grandtotal = 0;
-                                                        foreach ($ordered_products as $product) {
+                                                        foreach ($noncancelledorderedproducts as $product) {
                                                             $grandtotal = $grandtotal + ($product->price * $product->quantity);
                                                         }
                                                     @endphp
@@ -166,18 +222,19 @@
                                                     @php
                                                         $deliverycharge = 50;
                                                     @endphp
-                                                    <td colspan="6" align="right" style="font-weight: bold;">Delivery Charge: </td>
-                                                    <td style="vertical-align: inherit"> <input type="text" name="deliverycharge" value="Rs.{{$deliverycharge}}" disabled></td>
+                                                    <!--<td colspan="5" align="right" style="font-weight: bold;">Delivery Charge: </td>-->
+                                                    <!--<td style="vertical-align: inherit"> <input type="text" name="deliverycharge" value="Rs.{{$deliverycharge}}" disabled></td>-->
                                                 </tr>
                                                 <tr>
-                                                    @php
-                                                        $gtotal = ceil($grandtotal + $deliverycharge);
-                                                    @endphp
-                                                    <td colspan="6" align="right" style="font-weight: bold;">Grand Total:</td>
-                                                    <td style="vertical-align: inherit"><input type="text" name="gtotal" value="Rs.{{$gtotal}}" disabled></td>
+                                                    <!--@php-->
+                                                    <!--    $gtotal = ceil($grandtotal + $deliverycharge);-->
+                                                    <!--@endphp-->
+                                                    <td colspan="5" align="right" style="font-weight: bold;">Grand Total:</td>
+                                                    <td style="vertical-align: inherit"><input type="text" name="gtotal" value="Rs.{{$grandtotal}}" disabled></td>
                                                 </tr>
                                             </tbody>
                                         </table>
+
                                     </div>
                                 </div>
                                 <div class="tab-pane fade mt-2" id="payment" role="tabcard" aria-labelledby="payment-tab">
@@ -255,7 +312,14 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
 @endsection
+@push('scripts')
+    <!-- Include AlgoliaSearch JS Client and autocomplete.js library -->
+    <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+    <script src="{{ asset('backend/js/addalgolia.js') }}"></script>
+@endpush
