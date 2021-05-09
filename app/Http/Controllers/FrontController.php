@@ -55,6 +55,15 @@ class FrontController extends Controller
         return view('frontend.shop', compact('subcategories', 'products', 'filterproducts', 'ratedproducts'));
     }
 
+    public function offers()
+    {
+        $subcategories = Subcategory::latest()->get();
+        $products = Product::latest()->where('discount', '>', 0)->simplePaginate(16);
+        $filterproducts = Product::latest()->take(6)->get();
+        $ratedproducts = Review::orderBy('rating', 'DESC')->with('product')->take(6)->get();
+        return view('frontend.discountproducts', compact('subcategories', 'products', 'filterproducts', 'ratedproducts'));
+    }
+
     public function about()
     {
         // $subcategories = Subcategory::latest()->get();

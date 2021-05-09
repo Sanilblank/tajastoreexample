@@ -4,6 +4,7 @@
 </div>
 @php
     $setting = DB::table('settings')->first();
+    $offerproducts = DB::table('products')->where('discount', '>', 0)->get();
 @endphp
 <!-- Humberger Begin -->
 <div class="humberger__menu__overlay"></div>
@@ -59,6 +60,9 @@
             </li>
             <li class="active"><a href="{{ route('index') }}">Home</a></li>
             <li><a href="{{ route('shop') }}">Shop</a></li>
+            @if (count($offerproducts) > 0)
+                <li><a href="{{route('offers')}}">Sale</a></li>
+            @endif
             {{-- <li><a href="#">Pages</a>
                 <ul class="header__menu__dropdown text-center">
                     <li><a href="./shop-details.html">Shop Details</a></li>
@@ -152,6 +156,9 @@
                     <ul>
                         <li class="active"><a href="{{ route('index') }}">Home</a></li>
                         <li><a href="{{ route('shop') }}">Shop</a></li>
+                        @if (count($offerproducts) > 0)
+                            <li><a href="{{route('offers')}}">Sale</a></li>
+                        @endif
                         {{-- <li><a href="#">Pages</a>
                             <ul class="header__menu__dropdown">
                                 <li><a href="./shop-details.html">Shop Details</a></li>
@@ -226,7 +233,7 @@
                         @endforeach
                       </ul>
                 </div>
-       
+
             </div>
             <div class="col-lg-9">
                 <div class="hero__search">

@@ -48,6 +48,7 @@ Route::get('/', function () {
 
 Route::get('/home', [FrontController::class, 'index'])->name('home');
 Route::get('/shop', [FrontController::class, 'shop'])->name('shop');
+Route::get('/offers', [FrontController::class, 'offers'])->name('offers');
 Route::get('/about', [FrontController::class, 'about'])->name('about');
 Route::get('/termsandconditions', [FrontController::class, 'termsandconditions'])->name('termsandconditions');
 Route::get('/privacypolicy', [FrontController::class, 'privacypolicy'])->name('privacypolicy');
