@@ -145,7 +145,7 @@
                                     @endif
                                     <li><b>Shipping</b> <span>01 day shipping. <samp> Free pickup today</samp></span></li>
                                     {{-- <li><b>Weight</b> <span>{{$product->quantity}} {{$product->unit}}</span></li> --}}
-                                    <li><b>Vendor</b> <span>{{$product->vendor->name}}</span></li>
+                                    {{-- <li><b>Vendor</b> <span>{{$product->vendor->name}}</span></li> --}}
                                     {{-- <li><b>Share on</b>
                                         <div class="share">
                                             <a href="#"><i class="fa fa-facebook"></i></a>
