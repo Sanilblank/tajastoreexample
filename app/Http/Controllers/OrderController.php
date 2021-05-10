@@ -32,7 +32,14 @@ class OrderController extends Controller
                         ->addIndexColumn()
                         ->addColumn('customer', function($row) {
                             $delievery_address = DelieveryAddress::where('id', $row->delievery_address_id)->first();
-                            $customer = $delievery_address->firstname.' '. $delievery_address->lastname;
+                            if($row->user_id == 1)
+                            {
+                                $admin = "(Made by Admin)";
+                            }
+                            else{
+                                $admin = "";
+                            }
+                            $customer = $delievery_address->firstname.' '. $delievery_address->lastname . "<br>" .$admin;
                             return $customer;
                         })
                         ->addColumn('address', function($row) {
@@ -334,25 +341,27 @@ class OrderController extends Controller
         $ordered_products = OrderedProducts::where('order_id', $order->id)->get();
 
         foreach ($ordered_products as $ordered_product) {
-            if ($request['status_id'] == 6) {
-                $this->validate($request, [
-                    'reason' => 'required'
-                ]);
-                $product = Product::where('id', $ordered_product->product_id)->first();
-                $newstock = $product->unit_info + $ordered_product->quantity;
+            if($ordered_product->status_id != 6){
+                if ($request['status_id'] == 6) {
+                    $this->validate($request, [
+                        'reason' => 'required'
+                    ]);
+                    $product = Product::where('id', $ordered_product->product_id)->first();
+                    $newstock = $product->unit_info + $ordered_product->quantity;
 
-                $product->update([
-                    'unit_info' => $newstock
-                ]);
+                    $product->update([
+                        'unit_info' => $newstock
+                    ]);
 
-                $ordered_product->update([
-                    'status_id' => $request['status_id'],
-                    'reason' => $request['reason'],
-                ]);
-            } else {
-                $ordered_product->update([
-                    'status_id' => $request['status_id']
-                ]);
+                    $ordered_product->update([
+                        'status_id' => $request['status_id'],
+                        'reason' => $request['reason'],
+                    ]);
+                } else {
+                    $ordered_product->update([
+                        'status_id' => $request['status_id']
+                    ]);
+                }
             }
         }
         $order->update([

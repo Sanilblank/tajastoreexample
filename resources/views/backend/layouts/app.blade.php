@@ -98,7 +98,9 @@
                                     class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('order.index') }}">All Orders</a></li>
+                                        <li><a href="{{ route('cartproduct.index') }}">User Carts</a></li>
                                         <li><a href="{{ route('requestorder.index') }}">All Request Orders</a></li>
+                                        <li><a href="{{ route('cancelledproduct.index') }}">Cancelled Orders</a></li>
                                     </ul>
                                 </li>
                                     <li><a href="{{route('onlyusers')}}"><i class="fa fa-user"></i>Our Customers</a>

@@ -199,8 +199,10 @@
                                                                         <input type="number" class="form-control text-center" min="1" value="{{$ordered_product->quantity}}" name="quantity"/>
                                                                     </div>
 
-                                                                    @if ($ordered_product->status_id == 6 || $ordered_product->status_id == 5)
+                                                                    @if ($ordered_product->status_id == 6)
                                                                     <p class="h6" style="color: red">(Canceled)</p>
+                                                                    @elseif ($ordered_product->status_id == 5)
+                                                                    <p class="h6" style="color: green">(Delivered)</p>
                                                                     @else
                                                                         <button type="submit" class="btn btn-success">Update</button>
                                                                     @endif

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CancelledproductController;
+use App\Http\Controllers\CartproductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\OrderController;
@@ -131,6 +133,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('order', OrderController::class);
     Route::put('/addproductorder', [OrderController::class, 'addproductorder'])->name('addproductorder');
     Route::put('/productorder', [OrderController::class, 'productorder'])->name('productorder');
+
+    Route::resource('cartproduct', CartproductController::class);
+    Route::resource('cancelledproduct', CancelledproductController::class);
+    Route::get('/cancelledordershow/{id}', [CancelledproductController::class, 'cancelledordershow'])->name('cancelledordershow');
 
     Route::resource('vendors', VendorController::class);
     Route::put('deleteproductimage/{id}', [ProductController::class, 'deleteproductimage'])->name('deleteproductimage');
