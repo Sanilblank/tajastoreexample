@@ -104,6 +104,14 @@
                                         <li><a href="{{ route('cancelledproduct.index') }}">Cancelled Orders</a></li>
                                     </ul>
                                 </li>
+                                <li><a><i class="fa fa-rss-square"></i>Blogs <span
+                                    class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ route('blogcategory.index') }}">Blog Categories</a></li>
+                                        <li><a href="#">Our Blogs</a></li>
+
+                                    </ul>
+                                </li>
                                     <li><a href="{{route('onlyusers')}}"><i class="fa fa-user"></i>Our Customers</a>
                                 </li>
                             </ul>

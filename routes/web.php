@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\CancelledproductController;
 use App\Http\Controllers\CartproductController;
 use App\Http\Controllers\CategoryController;
@@ -149,6 +150,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('enablereview/{id}', [ReviewController::class, 'enableurl'])->name('review.enable');
     Route::put('disablereview/{id}', [ReviewController::class, 'disableurl'])->name('review.disable');
     Route::resource('slider', SliderController::class);
+
+    Route::resource('blogcategory', BlogCategoryController::class);
 
     // Single Vendor
     Route::resource('singlevendorcategory', VendorCategoryController::class);
