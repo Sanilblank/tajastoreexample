@@ -99,6 +99,7 @@
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('order.index') }}">All Orders</a></li>
                                         <li><a href="{{ route('cartproduct.index') }}">User Carts</a></li>
+                                        <li><a href="{{ route('wishlistproduct.index') }}">User Wishlists</a></li>
                                         <li><a href="{{ route('requestorder.index') }}">All Request Orders</a></li>
                                         <li><a href="{{ route('cancelledproduct.index') }}">Cancelled Orders</a></li>
                                     </ul>

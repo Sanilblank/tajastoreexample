@@ -21,6 +21,7 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\VendorOrderController;
 use App\Http\Controllers\VendorProductController;
 use App\Http\Controllers\VendorSubcategoryController;
+use App\Http\Controllers\WishlistproductController;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\Slider;
@@ -135,6 +136,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/productorder', [OrderController::class, 'productorder'])->name('productorder');
 
     Route::resource('cartproduct', CartproductController::class);
+    Route::resource('wishlistproduct', WishlistproductController::class);
     Route::resource('cancelledproduct', CancelledproductController::class);
     Route::get('/cancelledordershow/{id}', [CancelledproductController::class, 'cancelledordershow'])->name('cancelledordershow');
 

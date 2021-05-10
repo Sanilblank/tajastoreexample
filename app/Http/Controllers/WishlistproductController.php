@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cart;
 use App\Models\ProductImage;
 use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\Storage;
 
-class CartproductController extends Controller
+class WishlistproductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -40,12 +40,12 @@ class CartproductController extends Controller
                             return $logintype;
                         })
                         ->addColumn('noofitems', function($row){
-                            $cartitems = Cart::where('user_id', $row->id)->sum('quantity');
-                            return $cartitems;
+                            $wishlistitems = Wishlist::where('user_id', $row->id)->get();
+                            return count($wishlistitems);
                         })
                         ->addColumn('action', function($row){
-                            $showurl = route('cartproduct.show', $row->id);
-                            $btn = "<a href='$showurl' class='edit btn btn-primary btn-sm'>View User Cart</a>";
+                            $showurl = route('wishlistproduct.show', $row->id);
+                            $btn = "<a href='$showurl' class='edit btn btn-primary btn-sm'>View User Wishlist</a>";
 
                             return $btn;
                         })
@@ -53,7 +53,7 @@ class CartproductController extends Controller
                         ->make(true);
             }
 
-        return view('backend.cartproduct.index');
+        return view('backend.wishlistproduct.index');
     }else{
         return view('backend.permission.permission');
     }
@@ -92,7 +92,7 @@ class CartproductController extends Controller
         $user = User::findorfail($id);
         if($request->user()->can('manage-order')){
             if ($request->ajax()) {
-                $data = Cart::latest()->where('user_id', $id)->with('user')->with('product')->get();
+                $data = Wishlist::latest()->where('user_id', $id)->with('user')->with('product')->get();
                 return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('image', function ($row) {
@@ -135,7 +135,7 @@ class CartproductController extends Controller
                     ->rawColumns(['image', 'name', 'vendor', 'subcategory' ,'costprice', 'sellingprice', 'discount'])
                     ->make(true);
             }
-            return view('backend.cartproduct.show', compact('user'));
+            return view('backend.wishlistproduct.show', compact('user'));
 
         }else{
             return view('backend.permission.permission');

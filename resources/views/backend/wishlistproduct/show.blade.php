@@ -27,7 +27,7 @@
             </div>
         @endif
 
-        <h1 class="mt-3">User Cart Products => {{$user->name}} <a href="{{ route('cartproduct.index') }}" class="btn btn-primary btn-sm"> <i
+        <h1 class="mt-3">User Wishlist Products => {{$user->name}} <a href="{{ route('wishlistproduct.index') }}" class="btn btn-primary btn-sm"> <i
             class="fa fa-eye" aria-hidden="true"></i> Back to Active Users</a></h1>
         <div class="card mt-3">
             <div class="card-body table-responsive">
@@ -42,7 +42,6 @@
                             <th class="text-center">Bought Price</th>
                             <th class="text-center">Selling Price</th>
                             <th class="text-center">Discount</th>
-                            <th class="text-center">Quantity</th>
                             <th class="text-center">No in Stock</th>
                         </tr>
                     </thead>
@@ -64,7 +63,7 @@
 
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('cartproduct.show', $user->id) }}",
+                ajax: "{{ route('wishlistproduct.show', $user->id) }}",
                 columns: [{data: 'DT_RowIndex',name: 'DT_RowIndex'},
                         {data: 'image', name: 'image'},
                         {data: 'name', name: 'name'},
@@ -73,7 +72,6 @@
                         {data: 'costprice', name: 'costprice'},
                         {data: 'sellingprice', name: 'sellingprice'},
                         {data: 'discount', name: 'discount'},
-                        {data: 'quantity', name: 'quantity'},
                         {data: 'stock', name: 'stock'},
                 ]
             });
