@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BlogCategory;
 use App\Http\Controllers\Controller;
+use App\Models\Blog;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Str;
@@ -159,13 +160,13 @@ class BlogCategoryController extends Controller
         //
         $blogCategory = BlogCategory::findorfail($id);
 
-        // $blogs = Blog::all();
-        // foreach ($blogs as $blog) {
-        //     if(in_array($blogCategory->id, $blog->category))
-        //     {
-        //         return redirect()->back()->with('failure', 'Category is being used in blogs');
-        //     }
-        // }
+        $blogs = Blog::all();
+        foreach ($blogs as $blog) {
+            if(in_array($blogCategory->id, $blog->category))
+            {
+                return redirect()->back()->with('failure', 'Category is being used in blogs');
+            }
+        }
         $blogCategory->delete();
 
         return redirect()->route('blogcategory.index')->with('success', 'Category Successfully Deleted');

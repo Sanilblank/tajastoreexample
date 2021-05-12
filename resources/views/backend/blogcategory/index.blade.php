@@ -17,6 +17,19 @@
         </div>
     @endif
 
+    @if (session('failure'))
+    <div class="col-sm-12">
+        <div class="alert  alert-danger alert-dismissible fade show" role="alert">
+            {{ session('failure') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    @endif
+
+
+
     <h1 class="mt-3">View Blog Categories <a href="{{route('blogcategory.create')}}" class="btn btn-primary btn-sm"> <i class="fa fa-plus" aria-hidden="true"></i> Create Category</a></h1>
     <div class="card mt-3">
         <div class="card-body table-responsive">

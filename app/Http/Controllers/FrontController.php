@@ -6,6 +6,8 @@ use App\Mail\CustomerEmail;
 use App\Mail\EmailChangeVerification;
 use App\Mail\PasswordChangeVerification;
 use App\Mail\VerifyUserEmail;
+use App\Models\Blog;
+use App\Models\BlogCategory;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\DelieveryAddress;
@@ -648,5 +650,46 @@ class FrontController extends Controller
         $requestorder->notify(new RequestOrderNotification($requestorder));
 
         return redirect()->back()->with('success', 'Thank you for requesting. We will get back to you soon.');
+    }
+
+    public function blogs()
+    {
+
+        $blogcategories = BlogCategory::latest()->get();
+        $filterblogs = Blog::latest()->take(6)->get();
+        $topblogs = Blog::orderBy('view_count', 'DESC')->take(6)->get();
+        $allblogs = Blog::latest()->simplePaginate(12);
+
+        return view('frontend.blogs', compact('blogcategories', 'filterblogs', 'topblogs', 'allblogs'));
+    }
+
+    public function categoryblogs($slug)
+    {
+
+        $blogcategories = BlogCategory::latest()->get();
+        $filterblogs = Blog::latest()->take(6)->get();
+        $topblogs = Blog::orderBy('view_count', 'DESC')->take(6)->get();
+
+        $currentcategory = BlogCategory::where('slug', $slug)->first();
+        $allblogs = Blog::latest()->whereJsonContains('category', "$currentcategory->id")->simplePaginate(12);
+
+        return view('frontend.categoryblogs', compact('blogcategories', 'filterblogs', 'topblogs', 'allblogs', 'currentcategory'));
+    }
+
+    public function viewblog($id)
+    {
+        $currentblog = Blog::where('id', $id)->first();
+        $view_count = $currentblog->view_count;
+        $view_count += 1;
+        $currentblog->update([
+            'view_count'=>$view_count,
+        ]);
+
+
+        $blogcategories = BlogCategory::latest()->get();
+        $filterblogs = Blog::latest()->take(6)->get();
+        $topblogs = Blog::orderBy('view_count', 'DESC')->take(6)->get();
+
+        return view('frontend.viewblog', compact('blogcategories', 'filterblogs', 'topblogs', 'currentblog'));
     }
 }

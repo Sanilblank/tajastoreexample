@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BlogCategoryController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CancelledproductController;
 use App\Http\Controllers\CartproductController;
 use App\Http\Controllers\CategoryController;
@@ -116,6 +117,11 @@ Route::get('/search/{slug}', [FrontController::class, 'search'])->name('search')
 Route::get('/requestProduct', [FrontController::class, 'requestProduct'])->name('requestProduct');
 Route::post('/storeProductRequest', [FrontController::class, 'storeProductRequest'])->name('storeProductRequest');
 
+//Blogs
+Route::get('/blogs',[FrontController::class, 'blogs'])->name('blogs');
+Route::get('/categoryblogs/{slug}',[FrontController::class, 'categoryblogs'])->name('categoryblogs');
+Route::get('/viewblog/{id}',[FrontController::class, 'viewblog'])->name('viewblog');
+
 Auth::routes();
 
 Route::get('/verify', [RegisterController::class, 'verifyUser'])->name('verify.user');
@@ -152,6 +158,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('slider', SliderController::class);
 
     Route::resource('blogcategory', BlogCategoryController::class);
+    Route::resource('blog', BlogController::class);
 
     // Single Vendor
     Route::resource('singlevendorcategory', VendorCategoryController::class);

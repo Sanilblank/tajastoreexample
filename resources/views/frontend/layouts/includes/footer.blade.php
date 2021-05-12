@@ -24,6 +24,7 @@
                         {{-- <li><a href="#">FAQs</a></li> --}}
                         <li><a href="{{route('shop')}}">Visit Our Shop</a></li>
                         <li><a href="{{route('about')}}">About Our Shop</a></li>
+                        <li><a href="{{route('blogs')}}">Blogs</a></li>
                         <li><a href="{{route('contact')}}">Contact</a></li>
                         {{-- <li><a href="#">Secure Shopping</a></li> --}}
                         {{-- <li><a href="#">Delivery infomation</a></li> --}}
