@@ -21,6 +21,7 @@ class UserTableSeeder extends Seeder
                 'email'=>'admin@admin.com',
                 'role_id' => 1,
                 'password'=>bcrypt('password'),
+                'is_verified'=>1,
                 'created_at'      => date("Y-m-d H:i:s"),
                 'updated_at'      => date("Y-m-d H:i:s"),
             ],

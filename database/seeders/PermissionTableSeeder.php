@@ -71,6 +71,18 @@ class PermissionTableSeeder extends Seeder
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ],
+            [
+                'name' => 'Manage Order',
+                'slug' => Str::slug('Manage order'),
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ],
+            [
+                'name' => 'Manage Blog',
+                'slug' => Str::slug('Manage blog'),
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ],
         ]);
     }
 }
