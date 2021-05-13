@@ -45,9 +45,9 @@ class FrontController extends Controller
         } elseif(Auth::user()->role_id == 3) {
             $slider = Slider::latest()->get();
             $subcategories = Subcategory::latest()->get();
-            $featuredproducts = Product::latest()->where('featured', 1)->take(15)->get();
-            $offerproducts = Product::latest()->where('discount', '>', 0)->take(6)->get();
-            $filterproducts = Product::latest()->take(8)->get();
+            $featuredproducts = Product::latest()->where('featured', 1)->where('status', 1)->take(15)->get();
+            $offerproducts = Product::latest()->where('discount', '>', 0)->where('status', 1)->take(6)->get();
+            $filterproducts = Product::latest()->where('status', 1)->take(8)->get();
             $ratedproducts = Review::latest()->orderBy('rating', 'DESC')->with('product')->take(8)->get();
             return view('frontend.index', compact('subcategories', 'featuredproducts', 'offerproducts', 'filterproducts', 'ratedproducts', 'slider'));
         }
@@ -55,16 +55,16 @@ class FrontController extends Controller
     public function shop()
     {
         $subcategories = Subcategory::latest()->get();
-        $products = Product::latest()->simplePaginate(16);
-        $filterproducts = Product::latest()->take(6)->get();
+        $products = Product::latest()->where('status', 1)->simplePaginate(16);
+        $filterproducts = Product::latest()->where('status', 1)->take(6)->get();
         $ratedproducts = Review::latest()->orderBy('rating', 'DESC')->with('product')->take(6)->get();
         return view('frontend.shop', compact('subcategories', 'products', 'filterproducts', 'ratedproducts'));
     }
     public function offers()
     {
         $subcategories = Subcategory::latest()->get();
-        $products = Product::latest()->where('discount', '>', 0)->simplePaginate(16);
-        $filterproducts = Product::latest()->take(6)->get();
+        $products = Product::latest()->where('status', 1)->where('discount', '>', 0)->simplePaginate(16);
+        $filterproducts = Product::latest()->where('status', 1)->take(6)->get();
         $ratedproducts = Review::orderBy('rating', 'DESC')->with('product')->take(6)->get();
         return view('frontend.discountproducts', compact('subcategories', 'products', 'filterproducts', 'ratedproducts'));
     }
@@ -90,8 +90,8 @@ class FrontController extends Controller
     public function subcategories($slug)
     {
         $subcategory = Subcategory::where('slug', $slug)->first();
-        $products = Product::latest()->where('subcategory_id', $subcategory->id)->simplePaginate(16);
-        $filterproducts = Product::latest()->take(6)->get();
+        $products = Product::latest()->where('subcategory_id', $subcategory->id)->where('status', 1)->simplePaginate(16);
+        $filterproducts = Product::latest()->where('status', 1)->take(6)->get();
         $ratedproducts = Review::latest()->orderBy('rating', 'DESC')->with('product')->take(6)->get();
         $subcategories = Subcategory::latest()->get();
         return view('frontend.subcategory', compact('subcategories', 'products', 'subcategory', 'filterproducts', 'ratedproducts'));
@@ -109,9 +109,9 @@ class FrontController extends Controller
         $product = Product::where('slug', $slug)->where('id', $id)->first();
         $productimage = ProductImage::where('product_id', $product->id)->first();
         $productimages = ProductImage::where('product_id', $product->id)->get();
-        $relatedproducts = Product::where('subcategory_id', $product->subcategory_id)->where('id', '!=', $product->id)->take(5)->get();
+        $relatedproducts = Product::where('subcategory_id', $product->subcategory_id)->where('id', '!=', $product->id)->where('status', 1)->take(5)->get();
         $subcategories = Subcategory::latest()->get();
-        $filterproducts = Product::latest()->take(6)->get();
+        $filterproducts = Product::latest()->where('status', 1)->take(6)->get();
         $ratedproducts = Review::latest()->orderBy('rating', 'DESC')->take(6)->get();
         return view('frontend.products', compact('subcategories', 'product', 'productimage', 'productimages', 'relatedproducts', 'filterproducts', 'ratedproducts'));
     }
@@ -598,9 +598,9 @@ class FrontController extends Controller
     public function search($slug)
     {
         $subcategories = Subcategory::latest()->get();
-        $products = Product::where('slug', $slug)->latest()->simplePaginate(16);
+        $products = Product::where('slug', $slug)->latest()->where('status', 1)->simplePaginate(16);
 
-        $filterproducts = Product::latest()->take(6)->get();
+        $filterproducts = Product::latest()->where('status', 1)->take(6)->get();
         $ratedproducts = Review::orderBy('rating', 'DESC')->with('product')->take(6)->get();
 
         return view('frontend.search', compact('subcategories', 'products', 'filterproducts', 'ratedproducts'));
@@ -620,7 +620,7 @@ class FrontController extends Controller
     public function requestProduct()
     {
         $subcategories = Subcategory::latest()->get();
-        $filterproducts = Product::latest()->take(6)->get();
+        $filterproducts = Product::latest()->where('status', 1)->take(6)->get();
         $ratedproducts = Review::orderBy('rating', 'DESC')->with('product')->take(6)->get();
         return view('frontend.requestproduct', compact('subcategories', 'filterproducts', 'ratedproducts'));
     }

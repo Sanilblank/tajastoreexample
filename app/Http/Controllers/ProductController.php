@@ -60,6 +60,17 @@ class ProductController extends Controller
                         $info = $row->title . '<br>( ' . $row->quantity . ' ' . $row->unit . ')';
                         return $info;
                     })
+                    ->addColumn('status', function ($row) {
+                        if($row->status == 1)
+                        {
+                            $status = '<span class="badge bg-green" style="background-color: green";>Approved</span>';
+                        }
+                        else
+                        {
+                            $status = '<span class="badge bg-danger" style="color: white";>Not Approved</span>';
+                        }
+                        return $status;
+                    })
                     ->addColumn('action', function ($row) {
                         $editurl = route('product.edit', $row->id);
                         $deleteurl = route('product.destroy', $row->id);
@@ -74,7 +85,7 @@ class ProductController extends Controller
 
                         return $btn;
                     })
-                    ->rawColumns(['image', 'vendor', 'subcategory', 'costprice', 'sellingprice', 'stock', 'info', 'action'])
+                    ->rawColumns(['image', 'vendor', 'subcategory', 'costprice', 'sellingprice', 'stock', 'info', 'status', 'action'])
                     ->make(true);
             }
             return view('backend.product.index');

@@ -85,6 +85,7 @@
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('product.index') }}">All Products</a></li>
                                         <li><a href={{ route('product.create') }}>Add new Product</a></li>
+                                        <li><a href={{ route('review') }}>Customer Reviews</a></li>
                                     </ul>
                                 </li>
                                 <li><a><i class="fa fa-industry"></i>Our Vendors <span

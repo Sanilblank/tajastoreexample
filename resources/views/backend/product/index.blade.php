@@ -31,6 +31,7 @@
                         <th class="text-center">Bought Price</th>
                         <th class="text-center">Selling Price</th>
                         <th class="text-center">Stock</th>
+                        <th class="text-center">Status</th>
                         <th class="text-center">Action</th>
                     </tr>
                 </thead>
@@ -62,6 +63,7 @@
               {data: 'costprice', name: 'costprice'},
               {data: 'sellingprice', name: 'sellingprice'},
               {data: 'stock', name: 'stock'},
+              {data: 'status', name: 'status'},
               {
                   data: 'action',
                   name: 'action',
