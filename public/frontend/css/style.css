@@ -4304,3 +4304,58 @@ ol {
     font-weight: 600;
     color: #252525;
 }
+
+/* Cookbook CSS */
+
+.recipe-info {
+    padding: 10px;
+    padding: 0px 20px;
+}
+
+.recipe-info-text h3 {
+    border-bottom: 1px solid rgb(98, 185, 98);
+    line-height: 50px;
+}
+
+.ingredient {
+    margin-bottom: 50px;
+}
+
+.ingredient:hover .ingredient__pic .ingredient__pic__hover {
+    bottom: 20px;
+}
+
+.ingredient__pic {
+    float: left;
+    margin-right: 10px;
+    height: 90px;
+    width: 90px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ingredient__text {
+}
+
+.ingredient__text h6 {
+    margin-bottom: 10px;
+}
+
+.ingredient__text h6 a {
+    color: #252525;
+}
+
+.ingredient__text h5 {
+    color: #252525;
+    font-weight: 600;
+}
+
+.ingredient-bg {
+    background-color: #e2e2e217;
+    padding-top: 15px;
+}
+.ingredient-lg-4 {
+    flex: 0 0 33.333333%;
+    max-width: 23.333333%;
+    margin-bottom: 15px;
+}
