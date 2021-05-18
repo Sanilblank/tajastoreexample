@@ -122,6 +122,10 @@ Route::get('/blogs',[FrontController::class, 'blogs'])->name('blogs');
 Route::get('/categoryblogs/{slug}',[FrontController::class, 'categoryblogs'])->name('categoryblogs');
 Route::get('/viewblog/{id}',[FrontController::class, 'viewblog'])->name('viewblog');
 
+//CookBook
+Route::get('/cookbook',[FrontController::class, 'cookbook'])->name('cookbook');
+Route::get('/recipe',[FrontController::class, 'recipe'])->name('recipe');
+
 Auth::routes();
 
 Route::get('/verify', [RegisterController::class, 'verifyUser'])->name('verify.user');
