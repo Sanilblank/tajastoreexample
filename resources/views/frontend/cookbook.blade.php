@@ -5,7 +5,7 @@
 
   <!-- Breadcrumb Section Begin -->
   <section class="hero">
-      <div class="hero__item set-bg" data-setbg="img/hero/banner.jpg">
+      <div class="hero__item set-bg" data-setbg="{{asset('frontend/img/hero/banner.jpg')}}">
         <div class="hero__text">
           <span>FRUIT FRESH</span>
           <h2>Vegetable <br />100% Organic</h2>
@@ -30,7 +30,29 @@
                 <div class="blog__item">
                   <div class="recipe-time">15min</div>
                   <div class="blog__item__pic">
-                    <img src="img/blog/blog-2.jpg" alt="" />
+                    <img src="{{asset('frontend/img/blog/blog-2.jpg')}}" alt="" />
+                  </div>
+                  <div class="blog__item__text">
+                    <ul>
+                      <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                      <li><i class="fa fa-comment-o"></i> 5</li>
+                      <li>
+                        <i class="fa fa-shopping-basket"></i> Ingredients- 15
+                      </li>
+                    </ul>
+                    <h5><a href="{{route('recipe')}}">6 ways to prepare breakfast for 30</a></h5>
+                    <p>
+                      Sed quia non numquam modi tempora indunt ut labore et
+                      dolore magnam aliquam quaerat
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-6 recipe-border">
+                <div class="blog__item">
+                  <div class="recipe-time">15min</div>
+                  <div class="blog__item__pic">
+                    <img src="{{asset('frontend/img/blog/blog-2.jpg')}}" alt="" />
                   </div>
                   <div class="blog__item__text">
                     <ul>
@@ -52,7 +74,7 @@
                 <div class="blog__item">
                   <div class="recipe-time">15min</div>
                   <div class="blog__item__pic">
-                    <img src="img/blog/blog-2.jpg" alt="" />
+                    <img src="{{asset('frontend/img/blog/blog-2.jpg')}}" alt="" />
                   </div>
                   <div class="blog__item__text">
                     <ul>
@@ -74,29 +96,7 @@
                 <div class="blog__item">
                   <div class="recipe-time">15min</div>
                   <div class="blog__item__pic">
-                    <img src="img/blog/blog-2.jpg" alt="" />
-                  </div>
-                  <div class="blog__item__text">
-                    <ul>
-                      <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
-                      <li><i class="fa fa-comment-o"></i> 5</li>
-                      <li>
-                        <i class="fa fa-shopping-basket"></i> Ingredients- 15
-                      </li>
-                    </ul>
-                    <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
-                    <p>
-                      Sed quia non numquam modi tempora indunt ut labore et
-                      dolore magnam aliquam quaerat
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-6 recipe-border">
-                <div class="blog__item">
-                  <div class="recipe-time">15min</div>
-                  <div class="blog__item__pic">
-                    <img src="img/blog/blog-2.jpg" alt="" />
+                    <img src="{{asset('frontend/img/blog/blog-2.jpg')}}" alt="" />
                   </div>
                   <div class="blog__item__text">
                     <ul>
