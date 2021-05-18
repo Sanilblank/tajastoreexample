@@ -4,7 +4,7 @@
 
 
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
+    <section class="breadcrumb-section set-bg" data-setbg="{{asset('frontend/img/breadcrumb.jpg')}}">
       <div class="container">
         <div class="row">
           <div class="col-lg-12 text-center">
@@ -31,7 +31,7 @@
               <div class="product__details__pic__item">
                 <img
                   class="product__details__pic__item--large"
-                  src="img/product/details/product-details-1.jpg"
+                  src="asset{{('frontend/img/product/details/product-details-1.jpg')}}"
                   alt=""
                 />
               </div>
@@ -51,7 +51,7 @@
               <div class="col-lg-12">
                 <div class="blog__details__author">
                   <div class="blog__details__author__pic">
-                    <img src="img/blog/details/details-author.jpg" alt="" />
+                    <img src="asset{{('frontend/img/blog/details/details-author.jpg')}}" alt="" />
                   </div>
                   <div class="blog__details__author__text">
                     <h6>Michael Scofield</h6>
@@ -171,7 +171,7 @@
                         <div class="ingredient">
                           <div
                             class="ingredient__pic set-bg"
-                            data-setbg="img/product/product-1.jpg"
+                            data-setbg="{{asset('frontend/img/product/product-1.jpg')}}"
                           ></div>
                           <div class="ingredient__text">
                             <h6><a href="#">Crab Pool Security</a></h6>
@@ -182,7 +182,7 @@
                         <div class="ingredient">
                           <div
                             class="ingredient__pic set-bg"
-                            data-setbg="img/product/product-2.jpg"
+                            data-setbg="{{asset('frontend/img/product/product-2.jpg')}}"
                           ></div>
                           <div class="ingredient__text">
                             <h6><a href="#">Crab Pool Security</a></h6>
@@ -193,7 +193,7 @@
                         <div class="ingredient">
                           <div
                             class="ingredient__pic set-bg"
-                            data-setbg="img/product/product-3.jpg"
+                            data-setbg="{{asset('frontend/img/product/product-3.jpg')}}"
                           ></div>
                           <div class="ingredient__text">
                             <h6><a href="#">Crab Pool Security</a></h6>
@@ -204,7 +204,7 @@
                         <div class="ingredient">
                           <div
                             class="ingredient__pic set-bg"
-                            data-setbg="img/product/product-4.jpg"
+                            data-setbg="{{asset('frontend/img/product/product-4.jpg')}}"
                           ></div>
                           <div class="ingredient__text">
                             <h6><a href="#">Crab Pool Security</a></h6>
@@ -215,7 +215,7 @@
                         <div class="ingredient">
                           <div
                             class="ingredient__pic set-bg"
-                            data-setbg="img/product/product-5.jpg"
+                            data-setbg="{{asset('frontend/img/product/product-5.jpg')}}"
                           ></div>
                           <div class="ingredient__text">
                             <h6><a href="#">Crab Pool Security</a></h6>
@@ -229,16 +229,16 @@
                   <div class="product__details__tab__desc">
                     <h6>Cooking Steps</h6>
                     <pre>
-                      Step 1 : 
-                      Take a large non-stick pan and saute the pork bacon slices till they are crisp. 
-                      Step 2 : 
-                      Now chop the bacons into small pieces. 
-                      Step 3 : 
+                      Step 1 :
+                      Take a large non-stick pan and saute the pork bacon slices till they are crisp.
+                      Step 2 :
+                      Now chop the bacons into small pieces.
+                      Step 3 :
                       Add chopped onions to the pan, drizzle olive oil and stir till they are soft.
-                      Step 4 : 
-                      Pour in the sliced mushrooms, chopped bacons,garlic, pepper, salt and sage. 
-                      Step 5 : Stir till the mushrooms are brownish. 
-                      Step 6 : Add water/broth and simmer. 
+                      Step 4 :
+                      Pour in the sliced mushrooms, chopped bacons,garlic, pepper, salt and sage.
+                      Step 5 : Stir till the mushrooms are brownish.
+                      Step 6 : Add water/broth and simmer.
                       Step 7 : Sprinkle grated cheddar over the top surface, serve when the cheese melts.
                     </pre>
                   </div>
@@ -277,7 +277,7 @@
                 <tbody>
                   <tr>
                     <td class="shoping__cart__item">
-                      <img src="img/cart/cart-1.jpg" alt="" />
+                      <img src="asset{{('frontend/img/cart/cart-1.jpg')}}" alt="" />
                       <h5>Vegetable’s Package</h5>
                     </td>
                     <td class="shoping__cart__price">$55.00</td>
@@ -294,7 +294,7 @@
                   </tr>
                   <tr>
                     <td class="shoping__cart__item">
-                      <img src="img/cart/cart-2.jpg" alt="" />
+                      <img src="asset{{('frontend/img/cart/cart-2.jpg')}}" alt="" />
                       <h5>Fresh Garden Vegetable</h5>
                     </td>
                     <td class="shoping__cart__price">$39.00</td>
@@ -311,7 +311,7 @@
                   </tr>
                   <tr>
                     <td class="shoping__cart__item">
-                      <img src="img/cart/cart-3.jpg" alt="" />
+                      <img src="asset{{('frontend/img/cart/cart-3.jpg')}}" alt="" />
                       <h5>Organic Bananas</h5>
                     </td>
                     <td class="shoping__cart__price">$69.00</td>
@@ -339,6 +339,3 @@
 
 
 @endsection
-
-
-
