@@ -93,6 +93,16 @@
   <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
    <script src="{{ asset('frontend/js/algolia.js') }}"></script>
 
+   <!-- modal -->
+<script>
+
+        $(document).ready(function(){
+            $('#exampleModal').modal('show');
+
+
+        })
+
+</script>
     <script>
         function showPasswordForm(){
         $('.loginBox').fadeOut('fast',function(){
