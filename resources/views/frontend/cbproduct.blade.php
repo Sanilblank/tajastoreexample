@@ -31,7 +31,7 @@
               <div class="product__details__pic__item">
                 <img
                   class="product__details__pic__item--large"
-                  src="asset{{('frontend/img/product/details/product-details-1.jpg')}}"
+                  src="{{asset('frontend/img/product/details/product-details-1.jpg')}}"
                   alt=""
                 />
               </div>
@@ -51,7 +51,7 @@
               <div class="col-lg-12">
                 <div class="blog__details__author">
                   <div class="blog__details__author__pic">
-                    <img src="asset{{('frontend/img/blog/details/details-author.jpg')}}" alt="" />
+                    <img src="{{asset('frontend/img/blog/details/details-author.jpg')}}" alt="" />
                   </div>
                   <div class="blog__details__author__text">
                     <h6>Michael Scofield</h6>
@@ -277,7 +277,7 @@
                 <tbody>
                   <tr>
                     <td class="shoping__cart__item">
-                      <img src="asset{{('frontend/img/cart/cart-1.jpg')}}" alt="" />
+                      <img src="{{asset('frontend/img/cart/cart-1.jpg')}}" alt="" />
                       <h5>Vegetable’s Package</h5>
                     </td>
                     <td class="shoping__cart__price">$55.00</td>
@@ -294,7 +294,7 @@
                   </tr>
                   <tr>
                     <td class="shoping__cart__item">
-                      <img src="asset{{('frontend/img/cart/cart-2.jpg')}}" alt="" />
+                      <img src="{{asset('frontend/img/cart/cart-2.jpg')}}" alt="" />
                       <h5>Fresh Garden Vegetable</h5>
                     </td>
                     <td class="shoping__cart__price">$39.00</td>
@@ -311,7 +311,7 @@
                   </tr>
                   <tr>
                     <td class="shoping__cart__item">
-                      <img src="asset{{('frontend/img/cart/cart-3.jpg')}}" alt="" />
+                      <img src="{{asset('frontend/img/cart/cart-3.jpg')}}" alt="" />
                       <h5>Organic Bananas</h5>
                     </td>
                     <td class="shoping__cart__price">$69.00</td>
