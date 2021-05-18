@@ -692,4 +692,14 @@ class FrontController extends Controller
 
         return view('frontend.viewblog', compact('blogcategories', 'filterblogs', 'topblogs', 'currentblog'));
     }
+    
+    public function cookbook()
+    {
+        return view('frontend.cookbook');
+    }
+
+    public function recipe()
+    {
+        return view('frontend.cbproduct');
+    }
 }
