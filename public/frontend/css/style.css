@@ -4389,3 +4389,66 @@ ol {
         margin: 1.75rem auto;
     }
 }
+
+/* cookbook nav */
+
+.navbar .megamenu {
+    padding: 1rem;
+}
+.list-unstyled li a {
+    text-decoration: none;
+    color: black;
+}
+
+.cbnav {
+    background-color: #7fad39;
+}
+
+.cblink {
+    color: white !important;
+}
+
+.cblink:hover {
+    background-color: #85b341 !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:focus,
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: rgba(255, 255, 255, 0.75);
+    background-color: #85b341 !important;
+}
+
+.col-megamenu .title {
+    color: #7fad39;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+/* ============ desktop view ============ */
+@media all and (min-width: 992px) {
+    .navbar .has-megamenu {
+        position: static !important;
+    }
+    .navbar .megamenu {
+        left: 0;
+        right: 0;
+        width: 100%;
+        margin-top: 0;
+    }
+}
+/* ============ desktop view .end// ============ */
+
+/* ============ mobile view ============ */
+@media (max-width: 991px) {
+    .navbar.fixed-top .navbar-collapse,
+    .navbar.sticky-top .navbar-collapse {
+        overflow-y: auto;
+        max-height: 90vh;
+        margin-top: 10px;
+    }
+    .cbdrop .dropdown-menu.show {
+        display: block !important;
+    }
+}
+
+/* ============ mobile view .end// ============ */
