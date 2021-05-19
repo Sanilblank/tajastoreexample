@@ -140,8 +140,8 @@ ol {
 }
 
 .spad {
-    padding-top: 100px;
-    padding-bottom: 100px;
+    padding-top: 40px;
+    padding-bottom: 10px;
 }
 
 .text-white h1,
@@ -2312,13 +2312,16 @@ ol {
     width: 270px;
     transition: transform 0.2s;
 }
+.blog__item:hover {
+    transform: scale(1.02);
+}
 
 .blog__item__pic img {
     min-width: 100%;
 }
 
 .blog__item__text {
-    padding-top: 25px;
+    padding: 25px 10px 10px 10px;
 }
 
 .blog__item__text ul {
@@ -3320,6 +3323,11 @@ ol {
         display: none;
     }
 
+    .blog__item {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
     .header__cart .nav-right li.cart-icon .cart-hover {
         left: 110px;
         width: 200px;
@@ -3785,6 +3793,10 @@ ol {
     /* Small Device = 320px */
 
     @media only screen and (max-width: 479px) {
+        .blog__item {
+            margin-bottom: 10px;
+            width: 100%;
+        }
         .header__cart .nav-right li.cart-icon .cart-hover {
             width: 200px;
             padding: 10px;
@@ -4374,8 +4386,8 @@ ol {
     line-height: 45px;
     text-align: center;
     position: absolute;
-    right: 20px;
-    top: 20px;
+    left: 28px;
+    top: 12px;
 }
 
 .recipe-border {

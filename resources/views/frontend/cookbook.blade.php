@@ -118,21 +118,24 @@
 
   <!-- Blog Section Begin -->
   <section class="blog spad">
-      <div class="section-title">
+     
+      <div class="container">
+   
+        <div class="row">
+      
+          <div class="col-lg-10 col-md-12">
+          <div class="section-title">
         <h2>Tajamandi Recipes</h2>
       </div>
-      <div class="container">
-        <div class="row">
-          <!-- <div class="col-lg-4 col-md-5"></div> -->
-          <div class="col-lg-12 col-md-12">
-            <div class="row pb-3">
-              <div class="col-lg-3 col-md-6 col-sm-6 recipe-border">
-                <div class="blog__item">
-                  <div class="recipe-time">15min</div>
+            <div class="row pb-3 d-md-flex d-sm-flex d-xs-flex justify-content-center justify-content-lg-start">
+              <div class="col-lg-4 col-md-5 col-sm-6 ">
+                <div class="blog__item recipe-border">
+                  
                   <div class="blog__item__pic">
                     <img src="{{asset('frontend/img/blog/blog-2.jpg')}}" alt="" />
                   </div>
                   <div class="blog__item__text">
+                  <div class="recipe-time">15min</div>
                     <ul>
                       <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
                       <li><i class="fa fa-comment-o"></i> 5</li>
@@ -148,13 +151,14 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6 col-sm-6 recipe-border">
-                <div class="blog__item">
-                  <div class="recipe-time">15min</div>
+              <div class="col-lg-4 col-md-5 col-sm-6 ">
+                <div class="blog__item recipe-border">
+                  
                   <div class="blog__item__pic">
                     <img src="{{asset('frontend/img/blog/blog-2.jpg')}}" alt="" />
                   </div>
                   <div class="blog__item__text">
+                  <div class="recipe-time">15min</div>
                     <ul>
                       <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
                       <li><i class="fa fa-comment-o"></i> 5</li>
@@ -162,7 +166,7 @@
                         <i class="fa fa-shopping-basket"></i> Ingredients- 15
                       </li>
                     </ul>
-                    <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
+                    <h5><a href="{{route('recipe')}}">6 ways to prepare breakfast for 30</a></h5>
                     <p>
                       Sed quia non numquam modi tempora indunt ut labore et
                       dolore magnam aliquam quaerat
@@ -170,13 +174,15 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6 col-sm-6 recipe-border">
-                <div class="blog__item">
-                  <div class="recipe-time">15min</div>
+            
+              <div class="col-lg-4 col-md-5 col-sm-6 ">
+                <div class="blog__item recipe-border">
+                  
                   <div class="blog__item__pic">
                     <img src="{{asset('frontend/img/blog/blog-2.jpg')}}" alt="" />
                   </div>
                   <div class="blog__item__text">
+                  <div class="recipe-time">15min</div>
                     <ul>
                       <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
                       <li><i class="fa fa-comment-o"></i> 5</li>
@@ -184,7 +190,7 @@
                         <i class="fa fa-shopping-basket"></i> Ingredients- 15
                       </li>
                     </ul>
-                    <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
+                    <h5><a href="{{route('recipe')}}">6 ways to prepare breakfast for 30</a></h5>
                     <p>
                       Sed quia non numquam modi tempora indunt ut labore et
                       dolore magnam aliquam quaerat
@@ -192,13 +198,15 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6 col-sm-6 recipe-border">
-                <div class="blog__item">
-                  <div class="recipe-time">15min</div>
+    
+              <div class="col-lg-4 col-md-5 col-sm-6 ">
+                <div class="blog__item recipe-border">
+                  
                   <div class="blog__item__pic">
                     <img src="{{asset('frontend/img/blog/blog-2.jpg')}}" alt="" />
                   </div>
                   <div class="blog__item__text">
+                  <div class="recipe-time">15min</div>
                     <ul>
                       <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
                       <li><i class="fa fa-comment-o"></i> 5</li>
@@ -206,7 +214,7 @@
                         <i class="fa fa-shopping-basket"></i> Ingredients- 15
                       </li>
                     </ul>
-                    <h5><a href="#">6 ways to prepare breakfast for 30</a></h5>
+                    <h5><a href="{{route('recipe')}}">6 ways to prepare breakfast for 30</a></h5>
                     <p>
                       Sed quia non numquam modi tempora indunt ut labore et
                       dolore magnam aliquam quaerat
@@ -214,8 +222,33 @@
                   </div>
                 </div>
               </div>
+              <div class="col-lg-4 col-md-5 col-sm-6 ">
+                <div class="blog__item recipe-border">
+                  
+                  <div class="blog__item__pic">
+                    <img src="{{asset('frontend/img/blog/blog-2.jpg')}}" alt="" />
+                  </div>
+                  <div class="blog__item__text">
+                  <div class="recipe-time">15min</div>
+                    <ul>
+                      <li><i class="fa fa-calendar-o"></i> May 4,2019</li>
+                      <li><i class="fa fa-comment-o"></i> 5</li>
+                      <li>
+                        <i class="fa fa-shopping-basket"></i> Ingredients- 15
+                      </li>
+                    </ul>
+                    <h5><a href="{{route('recipe')}}">6 ways to prepare breakfast for 30</a></h5>
+                    <p>
+                      Sed quia non numquam modi tempora indunt ut labore et
+                      dolore magnam aliquam quaerat
+                    </p>
+                  </div>
+                </div>
+              </div>
+    
+      
 
-              <div class="col-lg-12">
+              <div class="col-lg-12 pt-5">
                 <div class="product__pagination blog__pagination">
                   <a href="#">1</a>
                   <a href="#">2</a>
@@ -225,6 +258,35 @@
               </div>
             </div>
           </div>
+
+<!-- additional details column -->
+<div class="col-lg-2 col-md-12 col-sm-12">
+
+  <div class="blog__sidebar">
+
+    <div class="blog__sidebar__search">
+                           <form action="#">
+                                <input type="text" placeholder="Search...">
+                                <button type="submit"><span class="icon_search"></span></button>
+                            </form>
+     </div>
+  </div>
+  <div class="blog__sidebar__item">
+                            <h4>Search By</h4>
+                            <div class="blog__sidebar__item__tags">
+                                <a href="#">Apple</a>
+                                <a href="#">Beauty</a>
+                                <a href="#">Vegetables</a>
+                                <a href="#">Fruit</a>
+                                <a href="#">Healthy Food</a>
+                                <a href="#">Lifestyle</a>
+                            </div>
+                        </div>
+
+
+
+
+</div>
         </div>
       </div>
     </section>

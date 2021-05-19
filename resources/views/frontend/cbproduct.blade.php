@@ -260,7 +260,9 @@
     <!-- Shoping Cart Section Begin -->
     <section class="shoping-cart spad">
       <div class="container">
-        <h4 class="text-center my-3">Shop Ingredients</h4>
+      <div class="section-title">
+        <h2>Shop Ingredients</h2>
+      </div>
         <div class="row">
           <div class="col-lg-12">
             <div class="shoping__cart__table">
