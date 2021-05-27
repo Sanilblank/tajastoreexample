@@ -140,8 +140,8 @@ ol {
 }
 
 .spad {
-    padding-top: 100px;
-    padding-bottom: 100px;
+    padding-top: 40px;
+    padding-bottom: 10px;
 }
 
 .text-white h1,
@@ -2307,7 +2307,13 @@ ol {
 -----------------------*/
 
 .blog__item {
-    margin-bottom: 60px;
+    margin-bottom: 10px;
+    height: auto;
+    width: 270px;
+    transition: transform 0.2s;
+}
+.blog__item:hover {
+    transform: scale(1.02);
 }
 
 .blog__item__pic img {
@@ -2315,7 +2321,7 @@ ol {
 }
 
 .blog__item__text {
-    padding-top: 25px;
+    padding: 25px 10px 10px 10px;
 }
 
 .blog__item__text ul {
@@ -3313,8 +3319,22 @@ ol {
 /* Wide Mobile = 480px */
 
 @media only screen and (max-width: 767px) {
+    .recipe-info-text h3 {
+        font-size: 16px;
+        line-height: 20px;
+    }
+    .recipe-info-text h2 {
+        font-size: 16px;
+        line-height: 20px;
+    }
+
     .dropdown-menu.show {
         display: none;
+    }
+
+    .blog__item {
+        margin-bottom: 10px;
+        width: 100%;
     }
 
     .header__cart .nav-right li.cart-icon .cart-hover {
@@ -3782,6 +3802,32 @@ ol {
     /* Small Device = 320px */
 
     @media only screen and (max-width: 479px) {
+        .ingredient__pic {
+            float: left;
+            margin-right: 10px;
+            height: 60px;
+            width: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ingredient__text h6 a {
+            color: #252525;
+            font-weight: 600;
+        }
+
+        .recipe-info-text h3 {
+            font-size: 16px;
+            line-height: 20px;
+        }
+        .recipe-info-text h2 {
+            font-size: 16px;
+            line-height: 20px;
+        }
+        .blog__item {
+            margin-bottom: 10px;
+            width: 100%;
+        }
         .header__cart .nav-right li.cart-icon .cart-hover {
             width: 200px;
             padding: 10px;
@@ -3860,6 +3906,10 @@ ol {
         -ms-flex: 0 0 25%;
         flex: 0 0 20%;
         max-width: 25%;
+    }
+    .recipe-lg-4 {
+        -ms-flex: 0 0 33.333333%;
+        flex: 0 0 33.333333%;
     }
 }
 
@@ -4304,3 +4354,148 @@ ol {
     font-weight: 600;
     color: #252525;
 }
+
+/* Cookbook CSS */
+
+.recipe-info {
+    padding: 10px;
+    padding: 0px 20px;
+}
+
+.recipe-info-text h3 {
+    border-bottom: 1px solid rgb(98, 185, 98);
+    line-height: 50px;
+}
+
+.ingredient {
+    margin-bottom: 50px;
+}
+
+.ingredient:hover .ingredient__pic .ingredient__pic__hover {
+    bottom: 20px;
+}
+
+.ingredient__pic {
+    float: left;
+    margin-right: 10px;
+    height: 90px;
+    width: 90px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ingredient__text {
+}
+
+.ingredient__text h6 {
+    margin-bottom: 10px;
+}
+
+.ingredient__text h6 a {
+    color: #252525;
+}
+
+.ingredient__text h5 {
+    color: #252525;
+    font-weight: 600;
+}
+
+.ingredient-bg {
+    background-color: #e2e2e217;
+    padding-top: 15px;
+}
+.ingredient-lg-4 {
+    flex: 0 0 33.333333%;
+    max-width: 23.333333%;
+    margin-bottom: 15px;
+}
+
+.recipe-time {
+    height: 50px;
+    width: 50px;
+    background: #e94b23;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 45px;
+    text-align: center;
+    position: absolute;
+    left: 28px;
+    top: 12px;
+}
+
+.recipe-border {
+    border: 1px solid rgb(177, 177, 177);
+    margin: 5px;
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 640px;
+        margin: 1.75rem auto;
+    }
+}
+
+/* cookbook nav */
+
+.navbar .megamenu {
+    padding: 1rem;
+}
+.list-unstyled li a {
+    text-decoration: none;
+    color: black;
+}
+
+.cbnav {
+    background-color: #7fad39;
+}
+
+.cblink {
+    color: white !important;
+}
+
+.cblink:hover {
+    background-color: #85b341 !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:focus,
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: rgba(255, 255, 255, 0.75);
+    background-color: #85b341 !important;
+}
+
+.col-megamenu .title {
+    color: #7fad39;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+/* ============ desktop view ============ */
+@media all and (min-width: 992px) {
+    .navbar .has-megamenu {
+        position: static !important;
+    }
+    .navbar .megamenu {
+        left: 0;
+        right: 0;
+        width: 100%;
+        margin-top: 0;
+    }
+}
+/* ============ desktop view .end// ============ */
+
+/* ============ mobile view ============ */
+@media (max-width: 991px) {
+    .navbar.fixed-top .navbar-collapse,
+    .navbar.sticky-top .navbar-collapse {
+        overflow-y: auto;
+        max-height: 90vh;
+        margin-top: 10px;
+    }
+    .cbdrop .dropdown-menu.show {
+        display: block !important;
+    }
+}
+
+/* ============ mobile view .end// ============ */

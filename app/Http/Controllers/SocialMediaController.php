@@ -33,12 +33,14 @@ class SocialMediaController extends Controller
                 return redirect()->intended('/')->with('success', 'Welcome To TajaMandi.');
             }
             else{
+                $monthyear = date('F, Y');
                 $newUser = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
                     'google_id'=> $user->id,
                     'role_id'=> 3,
                     'is_verified' => 1,
+                    'monthyear'=>$monthyear,
                     'password' => Hash::make('123456dummy')
                 ]);
                 Auth::login($newUser);
@@ -65,12 +67,14 @@ class SocialMediaController extends Controller
                 Auth::login($facebookId);
                 return redirect()->intended('/')->with('success', 'Welcome to TajaMandi.');
             }else{
+                $monthyear = date('F, Y');
                 $createUser = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
                     'facebook_id' => $user->id,
                     'role_id'=> 3,
                     'is_verified' => 1,
+                    'monthyear'=>$monthyear,
                     'password' => Hash::make('123456dummy')
                 ]);
 

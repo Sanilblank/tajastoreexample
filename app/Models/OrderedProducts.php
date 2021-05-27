@@ -19,7 +19,8 @@ class OrderedProducts extends Model
         'quantity',
         'price',
         'status_id',
-        'reason'
+        'reason',
+        'monthyear',
     ];
 
     public function product()

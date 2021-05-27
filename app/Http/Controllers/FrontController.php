@@ -10,7 +10,11 @@ use App\Models\Blog;
 use App\Models\BlogCategory;
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\CookbookItem;
+use App\Models\CookbookNavbar;
+use App\Models\CookbookSubcategory;
 use App\Models\DelieveryAddress;
+use App\Models\Ingredient;
 use App\Models\Requestorder;
 use App\Models\Order;
 use App\Models\OrderedProducts;
@@ -38,7 +42,98 @@ class FrontController extends Controller
     public function index()
     {
         if(Auth::user()->role_id == 1) {
-            return view('backend.dashboard');
+            $users = User::where('role_id', 3)->where('is_verified', 1)->get();
+            $vendors = User::where('role_id', 4)->where('is_verified',1)->get();
+            $allproducts = Product::where('status', 1)->get();
+            $datetoday = date('Y-m-d');
+            $ordertodaycount = 0;
+            $orders = Order::all();
+            foreach($orders as $order)
+            {
+                if($datetoday == date('Y-m-d', strtotime($order->created_at)))
+                {
+                    $ordertodaycount = $ordertodaycount + 1;
+                }
+            }
+
+            //For Barchart
+            $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            $newusers = array();
+
+
+            for($i=0; $i<12; $i++)
+            {
+                $newusers[$i] = 0;
+            }
+
+            for($i=0; $i<12; $i++)
+            {
+                $currentmonthyear = $months[$i].', '.date('Y');
+                $user = User::where('is_verified', 1)->where('role_id', 3)->where('monthyear', $currentmonthyear)->get();
+                $newusers[$i] = count($user);
+            }
+
+            //For Piechart
+            $monthyear = date('F, Y');
+            $frequentusers = array("user1" => 0,"user2" => 0,"user3" => 0,"user4" => 0,"user5" => 0);
+            $frequentusersname = array();
+            $frequentusersorders = array();
+
+            $allusers = User::where('role_id', 3)->where('is_verified', 1)->get();
+            foreach($allusers as $user)
+            {
+                $nooforders = Order::where('user_id', $user->id)->where('monthyear', $monthyear)->where('status_id', '!=' ,6)->count();
+                arsort($frequentusers);
+
+                if($nooforders > $frequentusers[array_key_last($frequentusers)])
+                {
+                    array_pop($frequentusers);
+                    $frequentusers[$user->name] = $nooforders;
+                    arsort($frequentusers);
+                }
+            }
+
+            foreach($frequentusers as $key=>$value)
+            {
+                array_push($frequentusersname, $key);
+                array_push($frequentusersorders, $value);
+            }
+
+            //For Linechart 1
+            $totalorders = array();
+            $totalincome = array();
+            $totalexpense = array();
+            $totalprofit = array();
+            for($i=0; $i<12; $i++)
+            {
+                $totalorders[$i] = 0;
+                $totalincome[$i] = 0;
+                $totalexpense[$i] = 0;
+                $totalprofit[$i] = 0;
+            }
+
+            for($i=0; $i<12; $i++)
+            {
+                $currentmonthyear = $months[$i].', '.date('Y');
+                $orders = Order::where('monthyear', $currentmonthyear)->get();
+                $totalorders[$i] = count($orders);
+
+                $orderedproducts = OrderedProducts::where('monthyear', $currentmonthyear)->where('status_id', '!=', 6)->get();
+                foreach($orderedproducts as $orderedproduct)
+                {
+                    $totalincome[$i] = $totalincome[$i] + ($orderedproduct->quantity * $orderedproduct->price);
+                    $totalexpense[$i] = $totalexpense[$i] + ($orderedproduct->quantity * $orderedproduct->product->bought_price);
+                    $totalprofit[$i] = $totalincome[$i] - $totalexpense[$i];
+                }
+
+
+            }
+
+
+
+
+
+            return view('backend.dashboard', compact('users', 'vendors', 'allproducts', 'ordertodaycount', 'newusers', 'frequentusersname', 'frequentusersorders', 'totalorders', 'totalincome', 'totalexpense', 'totalprofit'));
 
         } elseif (Auth::user()->role_id == 4) {
             return view('backend.singlevendor.vendordashboard');
@@ -325,11 +420,13 @@ class FrontController extends Controller
             }
 
             $delievery_address->save();
+            $monthyear = date('F, Y');
 
             $order = Order::create([
                 'user_id' => Auth::user()->id,
                 'delievery_address_id' => $delievery_address->id,
-                'status_id' => 1
+                'status_id' => 1,
+                'monthyear'=>$monthyear,
             ]);
 
             $order->save();
@@ -349,7 +446,8 @@ class FrontController extends Controller
                     'product_id' => $cartproduct->product_id,
                     'quantity' => $cartproduct->quantity,
                     'price' => $cartproduct->price,
-                    'status_id' => 1
+                    'status_id' => 1,
+                    'monthyear'=>$monthyear,
                 ]);
 
                 $product->update([
@@ -691,5 +789,32 @@ class FrontController extends Controller
         $topblogs = Blog::orderBy('view_count', 'DESC')->take(6)->get();
 
         return view('frontend.viewblog', compact('blogcategories', 'filterblogs', 'topblogs', 'currentblog'));
+    }
+
+    public function cookbook()
+    {
+
+        $navbaritems = CookbookNavbar::where('status', 1)->get();
+        $cookbookitems = CookbookItem::latest()->where('status', 1)->simplePaginate(12);
+        $latestcategories = CookbookSubcategory::latest()->where('status', 1)->take(6)->get();
+        return view('frontend.cookbook', compact('navbaritems', 'cookbookitems', 'latestcategories'));
+    }
+
+    public function cookbooksubcategories($id, $slug)
+    {
+
+        $navbaritems = CookbookNavbar::where('status', 1)->get();
+        $cookbookitems = CookbookItem::latest()->where('status', 1)->where('cookbooksubcategory_id', $id)->simplePaginate(12);
+        $latestcategories = CookbookSubcategory::latest()->where('status', 1)->take(6)->get();
+        $selectedsubcategory = CookbookSubcategory::findorfail($id);
+        return view('frontend.cookbooksubcategory', compact('navbaritems', 'cookbookitems', 'latestcategories', 'selectedsubcategory'));
+    }
+
+    public function recipe($id, $slug)
+    {
+        $navbaritems = CookbookNavbar::where('status', 1)->get();
+        $cookbookitem = CookbookItem::where('id', $id)->with('subcategory')->with('levelofcooking')->with('recipetype')->first();
+        $ingredients = Ingredient::where('cookbookitem_id', $id)->with('product')->get();
+        return view('frontend.cbproduct', compact('cookbookitem', 'ingredients', 'navbaritems'));
     }
 }

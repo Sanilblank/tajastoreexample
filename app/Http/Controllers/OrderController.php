@@ -164,10 +164,12 @@ class OrderController extends Controller
             ]);
             $delievery_address->save();
 
+            $monthyear = date('F, Y');
             $order = Order::create([
                 'user_id'=>1,
                 'delievery_address_id'=>$delievery_address['id'],
                 'status_id'=>1,
+                'monthyear'=>$monthyear,
             ]);
             $order->save();
 
@@ -175,14 +177,23 @@ class OrderController extends Controller
             foreach($data['product_id'] as $product_id)
             {
                 $product = Product::findorfail($product_id);
+                if($product->discount > 0)
+                {
+                    $discountamount = ($product->discount / 100) * $product->price;
+                    $actualamount = $product->price - $discountamount;
+                }
+                else{
+                    $actualamount = $product->price;
+                }
                 $orderedproduct = OrderedProducts::create([
                     'user_id'=>1,
                     'order_id'=>$order['id'],
                     'vendor_id'=>$product->vendor_id,
                     'product_id'=>$product->id,
                     'quantity'=>1,
-                    'price'=>$product->price,
-                    'status_id'=>1
+                    'price'=>$actualamount,
+                    'status_id'=>1,
+                    'monthyear'=>$monthyear,
                 ]);
                 $orderedproduct->save();
                 $product->update([

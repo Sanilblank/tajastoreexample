@@ -6,6 +6,16 @@
 @endpush
 @section('content')
     <div class="right_col" role="main">
+        @if (session('failure'))
+        <div class="col-sm-12">
+            <div class="alert  alert-danger alert-dismissible fade show" role="alert">
+                {{ session('failure') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        @endif
         <h1 class="mt-3">Create Products <a href="{{ route('product.index') }}" class="btn btn-primary btn-sm"> <i
                     class="fa fa-eye" aria-hidden="true"></i> View Products</a></h1>
         <div class="card mt-3">

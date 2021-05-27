@@ -103,11 +103,15 @@ class UserController extends Controller
                 'password' => 'sometimes|min:8|confirmed',
             ]);
 
+            $monthyear = date('F, Y');
+
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'role_id' => $data['role_id'],
                 'password' => Hash::make($data['password']),
+                'is_verified'=>1,
+                'monthyear'=>$monthyear,
             ]);
             $user->roles()->attach($data['role_id']);
             $permissions = RolePermission::where('role_id', $data['role_id'])->get();

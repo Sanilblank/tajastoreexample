@@ -6,7 +6,12 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CancelledproductController;
 use App\Http\Controllers\CartproductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CookbookCategoryController;
+use App\Http\Controllers\CookbookItemController;
+use App\Http\Controllers\CookbookNavbarController;
+use App\Http\Controllers\CookbookSubcategoryController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
@@ -24,6 +29,8 @@ use App\Http\Controllers\VendorOrderController;
 use App\Http\Controllers\VendorProductController;
 use App\Http\Controllers\VendorSubcategoryController;
 use App\Http\Controllers\WishlistproductController;
+use App\Models\CookbookItem;
+use App\Models\Ingredient;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\Slider;
@@ -122,6 +129,11 @@ Route::get('/blogs',[FrontController::class, 'blogs'])->name('blogs');
 Route::get('/categoryblogs/{slug}',[FrontController::class, 'categoryblogs'])->name('categoryblogs');
 Route::get('/viewblog/{id}',[FrontController::class, 'viewblog'])->name('viewblog');
 
+//CookBook
+Route::get('/cookbook',[FrontController::class, 'cookbook'])->name('cookbook');
+Route::get('/cookbooksubcategories/{id}/{slug}',[FrontController::class, 'cookbooksubcategories'])->name('cookbooksubcategories');
+Route::get('/recipe/{id}/{slug}',[FrontController::class, 'recipe'])->name('recipe');
+
 Auth::routes();
 
 Route::get('/verify', [RegisterController::class, 'verifyUser'])->name('verify.user');
@@ -159,6 +171,29 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('blogcategory', BlogCategoryController::class);
     Route::resource('blog', BlogController::class);
+
+    //CookBook
+    Route::resource('cookbooknavbar', CookbookNavbarController::class);
+    Route::resource('cookbookcategory', CookbookCategoryController::class);
+
+    Route::get('/cookbooksubcategory/{id}', [CookbookSubcategoryController::class, 'index'])->name('cookbooksubcategory.index');
+    Route::get('/cookbooksubcategory/create/{id}', [CookbookSubcategoryController::class, 'create'])->name('cookbooksubcategory.create');
+    Route::resource('cookbooksubcategory', CookbookSubcategoryController::class, ['except' => ['index', 'create']]);
+
+    Route::get('/cookbookitem/{id}', [CookbookItemController::class, 'index'])->name('cookbookitem.index');
+    Route::get('/cookbookitem/create/{id}', [CookbookItemController::class, 'create'])->name('cookbookitem.create');
+    Route::get('/cookbookitem/show/{id}', [CookbookItemController::class, 'show'])->name('cookbookitem.show');
+
+    Route::resource('cookbookitem', CookbookItemController::class, ['except' => ['index', 'create', 'show']]);
+
+    Route::post('/storeingredient', [CookbookItemController::class, 'storeingredient'])->name('storeingredient');
+    Route::post('/updateingredient/{id}', [CookbookItemController::class, 'updateingredient'])->name('updateingredient');
+    Route::delete('/removeingredient/{id}', [CookbookItemController::class, 'removeingredient'])->name('removeingredient');
+
+    Route::resource('ingredient', IngredientController::class);
+
+
+
 
     // Single Vendor
     Route::resource('singlevendorcategory', VendorCategoryController::class);

@@ -83,6 +83,12 @@ class PermissionTableSeeder extends Seeder
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ],
+            [
+                'name' => 'Manage CookBook',
+                'slug' => Str::slug('Manage cookbook'),
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ],
         ]);
     }
 }

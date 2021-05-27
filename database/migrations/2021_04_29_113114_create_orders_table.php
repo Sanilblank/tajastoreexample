@@ -18,6 +18,7 @@ class CreateOrdersTable extends Migration
             $table->integer('user_id');
             $table->integer('delievery_address_id');
             $table->integer('status_id');
+            $table->string('monthyear');
             $table->timestamps();
         });
     }

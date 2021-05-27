@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(10)->create();
         $this->call(UserTableSeeder::class);
         $this->call(RoleTableSeeder::class);
         $this->call(PermissionTableSeeder::class);
@@ -26,5 +26,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductTableSeeder::class);
         $this->call(SettingTableSeeder::class);
         $this->call(OrderStatusTableSeeder::class);
+        $this->call(CookbookNavbarSeeder::class);
+        $this->call(LevelofcookingSeeder::class);
+        $this->call(RecipetypeSeeder::class);
     }
 }

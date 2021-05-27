@@ -34,6 +34,8 @@
 
     <!-- Custom Theme Style -->
     <link href="{{ asset('backend/build/css/custom.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('backend/css/maps/custom.css') }}" rel="stylesheet">
+
 
     @stack('styles')
 </head>
@@ -111,6 +113,35 @@
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('blogcategory.index') }}">Blog Categories</a></li>
                                         <li><a href="{{ route('blog.index') }}">Our Blogs</a></li>
+
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-book"></i>CookBook <span
+                                    class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ route('cookbooknavbar.index') }}">NavBar</a></li>
+                                        <li><a href="{{ route('cookbookcategory.index') }}">Category</a></li>
+                                        @php
+                                            $navitems = DB::table('cookbook_navbars')->latest()->where('status', 1)->get();
+
+                                        @endphp
+                                        <li><a>Subcategory <span
+                                            class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                @foreach ($navitems as $item)
+                                                    <li><a href="{{route('cookbooksubcategory.index', $item->id)}}">{{$item->navbar_item}}</a></li>
+                                                @endforeach
+
+                                            </ul>
+                                        </li>
+                                        <li><a>Items <span
+                                            class="fa fa-chevron-down"></span></a>
+                                            <ul class="nav child_menu">
+                                                @foreach ($navitems as $item)
+                                                    <li><a href="{{route('cookbookitem.index', $item->id)}}">{{$item->navbar_item}}</a></li>
+                                                @endforeach
+                                            </ul>
+                                        </li>
 
                                     </ul>
                                 </li>

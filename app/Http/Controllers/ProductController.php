@@ -137,6 +137,17 @@ class ProductController extends Controller
                 'photos.*' => 'mimes:jpg,jpeg,png'
             ]);
 
+            $existingproduct = Product::where('vendor_id', $data['vendor'])
+                                        ->where('subcategory_id', $data['subcategory'])
+                                        ->where('title', $data['title'])
+                                        ->where('quantity', $data['quantity'])
+                                        ->where('unit', $data['unit'])->first();
+            if($existingproduct)
+            {
+                return redirect()->back()->with('failure', 'Same product exists. Please edit it.');
+            }
+
+
             $product = Product::create([
                 'vendor_id' => $data['vendor'],
                 'subcategory_id' => $data['subcategory'],

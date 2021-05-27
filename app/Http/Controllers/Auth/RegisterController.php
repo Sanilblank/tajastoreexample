@@ -82,6 +82,8 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
+        $monthyear = date('F, Y');
+
         $user = new User();
 
         $user->name = $request->name;
@@ -89,6 +91,7 @@ class RegisterController extends Controller
         $user->role_id = 3;
         $user->password = Hash::make($request->password);
         $user->verification_code = sha1(time());
+        $user->monthyear = $monthyear;
 
         $user->save();
 
