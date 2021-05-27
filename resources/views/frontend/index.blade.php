@@ -12,6 +12,23 @@
         </div>
     </div> --}}
 
+    <!-- modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                 <img src="{{ asset('frontend/img/modaltaja.jpg') }}">
+                </div>
+                <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-success"><a href="{{ route('shop') }}" >Order Now</a></button> -->
+                <a type="button" class="btn btn-success" href="{{ route('shop') }}" target="_blank">Order Now</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <section class="hero-section">
     <div class="hero-items owl-carousel">
         @foreach ($slider as $slideritem)

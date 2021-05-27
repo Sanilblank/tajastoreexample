@@ -14,6 +14,7 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
 
+
     <!-- Css Styles -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
@@ -98,6 +99,16 @@
   <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
    <script src="{{ asset('frontend/js/algolia.js') }}"></script>
 
+   <!-- modal -->
+<script>
+
+        $(document).ready(function(){
+            $('#exampleModal').modal('show');
+
+
+        })
+
+</script>
     <script>
         function showPasswordForm(){
         $('.loginBox').fadeOut('fast',function(){

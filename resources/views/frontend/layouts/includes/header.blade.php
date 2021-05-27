@@ -172,7 +172,6 @@
                         <li><a href="{{ route('requestProduct') }}">Request Product</a></li>
                         <li><a href="{{ route('contact') }}">Contact</a></li>
                         <li><a href="{{route('cookbook')}}">CookBook</a></li>
-
                         {{-- <li><a href="{{route('about')}}">About Us</a></li> --}}
                     </ul>
                 </nav>
