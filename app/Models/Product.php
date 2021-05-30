@@ -27,10 +27,10 @@ class Product extends Model
         'unit_info'
     ];
 
-    public function searchableAs()
-    {
-        return 'example_products';
-    }
+    // public function searchableAs()
+    // {
+    //     return 'example_products';
+    // }
 
     public function vendor()
     {

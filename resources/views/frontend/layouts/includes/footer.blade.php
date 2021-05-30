@@ -41,11 +41,13 @@
             <div class="col-lg-4 col-md-12">
                 <div class="footer__widget">
                     <h6>Find us on Social Media</h6>
-                    {{-- <p>Get E-mail updates about our latest shop and special offers.</p>
-                    <form action="#">
-                        <input type="text" placeholder="Enter your mail">
+                    <p>Get E-mail updates about our latest shop and special offers.</p>
+                    <form action="{{route('registerSubscriber')}}" method="POST">
+                        @csrf
+                        @method('POST')
+                        <input type="email" name="email" placeholder="Enter your mail">
                         <button type="submit" class="site-btn">Subscribe</button>
-                    </form> --}}
+                    </form>
                     <div class="footer__widget__social mt-2">
                         <a href="{{$setting->facebook}}" target="_blank"><i class="fa fa-facebook"></i></a>
                         <a href="{{$setting->instagram}}" target="_blank"><i class="fa fa-instagram"></i></a>

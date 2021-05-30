@@ -176,6 +176,7 @@
                                     </ul>
                                 </li>
                                 <li><a href="{{ route('review') }}"><i class="fa fa-star"></i> Reviews</a></li>
+                                <li><a href="{{route('subscriber.index')}}"><i class="fa fa-male"></i> Subscribers</a></li>
 
                             </ul>
                         </div>

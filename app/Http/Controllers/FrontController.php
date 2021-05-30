@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Mail\CustomerEmail;
 use App\Mail\EmailChangeVerification;
 use App\Mail\PasswordChangeVerification;
+use App\Mail\RegisterSubscriber;
+use App\Mail\SubscriberMail;
 use App\Mail\VerifyUserEmail;
 use App\Models\Blog;
 use App\Models\BlogCategory;
@@ -24,6 +26,7 @@ use App\Models\Review;
 use App\Models\Setting;
 use App\Models\Slider;
 use App\Models\Subcategory;
+use App\Models\Subscriber;
 use App\Models\User;
 use App\Models\Wishlist;
 use App\Notifications\NewOrderedProduct;
@@ -35,6 +38,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 class FrontController extends Controller
@@ -816,5 +820,66 @@ class FrontController extends Controller
         $cookbookitem = CookbookItem::where('id', $id)->with('subcategory')->with('levelofcooking')->with('recipetype')->first();
         $ingredients = Ingredient::where('cookbookitem_id', $id)->with('product')->get();
         return view('frontend.cbproduct', compact('cookbookitem', 'ingredients', 'navbaritems'));
+    }
+
+    public function registerSubscriber(Request $request)
+    {
+        $data = $this->validate($request, [
+            'email'=>'required|email',
+        ]);
+
+        $exsitingsubscriber = Subscriber::where('email', $data['email'])->first();
+        if($exsitingsubscriber)
+        {
+            return redirect()->route('index')->with('success', 'You have already subscribed. Thank you!!');
+        }
+        else{
+            $subscriber = Subscriber::create([
+                'email'=>$data['email'],
+                'is_verified'=>0,
+                'verification_code'=>sha1(time())
+            ]);
+            $subscriber->save();
+            $mailData = [
+                'verification_code' => $subscriber->verification_code,
+            ];
+            Mail::to($data['email'])->send(new RegisterSubscriber($mailData));
+
+            return redirect()->route('index')->with('success', 'We have sent a confirmation code to your email account for subscription. Please Check your email.');
+        }
+    }
+
+    public function subscriberconfirm()
+    {
+        $verification_code = \Illuminate\Support\Facades\Request::get('code');
+        $subscriber = Subscriber::where('verification_code', $verification_code)->first();
+        if( $subscriber != null)
+        {
+            $subscriber->is_verified = 1;
+            $subscriber->save();
+            return redirect()->route('index')->with('success', 'Thank you for subscribing.');
+        }
+        return redirect()->route('index')->with('failure', 'Sorry, Your subscribtion is not confirmed. Please try again!');
+    }
+
+    public static function sendsubscribermail($product_id)
+    {
+        $product = Product::findorfail($product_id);
+        $productimage = ProductImage::where('product_id', $product_id)->first();
+        $url = 'http://127.0.0.1:8000/products/' . $product->slug . '/' . $product_id;
+        $setting = Setting::first();
+        $mailData = [
+            'product' => $product,
+            'productimage' => $productimage,
+            'url' => $url,
+            'setting' => $setting,
+        ];
+
+        $subscribers = Subscriber::where('is_verified', 1)->get();
+        foreach($subscribers as $subscriber)
+        {
+            Mail::to($subscriber->email)->send(new SubscriberMail($mailData));
+        }
+
     }
 }

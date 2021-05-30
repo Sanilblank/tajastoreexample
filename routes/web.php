@@ -22,6 +22,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SocialMediaController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\SubcategoryController;
+use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorCategoryController;
 use App\Http\Controllers\VendorController;
@@ -134,6 +135,10 @@ Route::get('/cookbook',[FrontController::class, 'cookbook'])->name('cookbook');
 Route::get('/cookbooksubcategories/{id}/{slug}',[FrontController::class, 'cookbooksubcategories'])->name('cookbooksubcategories');
 Route::get('/recipe/{id}/{slug}',[FrontController::class, 'recipe'])->name('recipe');
 
+//Subscriber
+Route::post('registerSubscriber', [FrontController::class, 'registerSubscriber'])->name('registerSubscriber');
+Route::get('/subscriberconfirm',[FrontController::class, 'subscriberconfirm'])->name('subscriberconfirm');
+
 Auth::routes();
 
 Route::get('/verify', [RegisterController::class, 'verifyUser'])->name('verify.user');
@@ -191,8 +196,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/removeingredient/{id}', [CookbookItemController::class, 'removeingredient'])->name('removeingredient');
 
     Route::resource('ingredient', IngredientController::class);
-
-
+    Route::resource('subscriber', SubscriberController::class);
 
 
     // Single Vendor

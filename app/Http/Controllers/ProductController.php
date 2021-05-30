@@ -177,6 +177,7 @@ class ProductController extends Controller
                 }
             }
             $product->save();
+            FrontController::sendsubscribermail($product->id);
             return redirect()->route('product.index')->with('success', 'Product information created successfully.');
         } else {
             return view('backend.permission.permission');
